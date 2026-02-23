@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiT Studio - Магазин люксовых брендов</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .brand-font, .logo { font-family: 'Playfair Display', serif; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-white text-black antialiased">
+
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <div class="flex items-center space-x-8">
+                <a href="#" class="text-2xl font-bold logo" onclick="showHome()">ZiT Studio</a>
+                <nav class="hidden md:flex space-x-6 text-sm font-semibold uppercase">
+                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('All')">Shop</a>
+                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Acne Studios')">Acne Studios</a>
+                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Balenciaga')">Balenciaga</a>
+                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Maison Margiela')">Maison Margiela</a>
+                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Rick Owens')">Rick Owens</a>
+                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Thug Club')">Adidas & TC</a>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="showOrderHistory()" class="text-gray-600 hover:text-black">
+                    <i class="fas fa-history"></i>
+                </button>
+                <button onclick="toggleAdminPanel()" class="text-gray-600 hover:text-black">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+                <button onclick="showWishlist()" class="text-gray-600 hover:text-black relative">
+                    <i class="far fa-heart"></i>
+                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="showCart()" class="text-gray-600 hover:text-black relative">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <div id="home-view" class="fade-in">
+            <div class="relative mb-12">
+                <img src="img/logo.jpg" alt="Hero Image" class="w-full h-96 object-cover object-center">
+                <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white p-4">
+                    <h1 class="text-6xl md:text-8xl brand-font tracking-tight mb-4">ZiT Studio</h1>
+                    <p class="text-lg md:text-xl font-light uppercase tracking-widest">Культовые бренды. Ваш стиль.</p>
+                    <button onclick="showShop('All')" class="mt-8 px-6 py-3 border border-white text-white uppercase text-sm font-semibold hover:bg-white hover:text-black transition duration-300">
+                        Начать покупки
+                    </button>
+                </div>
+            </div>
+
+            <h2 class="text-3xl font-bold brand-font mb-8">Наши бренды</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Acne Studios')">
+                    <img src="img/acnelogo.jpg" alt="Acne Studios" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                        <p class="text-white text-xl font-bold uppercase tracking-wider">Acne Studios</p>
+                    </div>
+                </a>
+                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Balenciaga')">
+                    <img src="img/balenciagalogo.jpg" alt="Balenciaga" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                        <p class="text-white text-xl font-bold uppercase tracking-wider">Balenciaga</p>
+                    </div>
+                </a>
+                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Maison Margiela')">
+                    <img src="img/m&m,logo.jpg" alt="Maison Margiela" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                        <p class="text-white text-xl font-bold uppercase tracking-wider">Maison Margiela</p>
+                    </div>
+                </a>
+                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Rick Owens')">
+                    <img src="img/rickowenslogo.jpg" alt="Rick Owens" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                        <p class="text-white text-xl font-bold uppercase tracking-wider">Rick Owens</p>
+                    </div>
+                </a>
+                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Thug Club')">
+                    <img src="img/adidas&tclogo.jpg" alt="Adidas X TC" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                        <p class="text-white text-xl font-bold uppercase tracking-wider">Adidas X TC</p>
+                    </div>
+                </a>
+                <a href="#" class="block group relative overflow-hidden" onclick="showShop('All')">
+                    <img src="img/logo.jpg" alt="Shop All" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
+                        <p class="text-white text-xl font-bold uppercase tracking-wider">Все товары</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="shop-view" class="hidden">
+            <h2 id="shop-title" class="text-4xl font-bold brand-font mb-6 fade-in">Магазин</h2>
+            
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-64 flex-shrink-0 bg-gray-50 p-4 rounded-lg shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">Фильтры</h3>
+
+                    <div class="mb-4">
+                        <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-1">Категория</label>
+                        <select id="category-filter" onchange="filterAndRender()" class="w-full border-gray-300 rounded-md shadow-sm text-sm p-2">
+                            <option value="All">Все</option>
+                            <option value="outwear">Верхняя одежда</option>
+                            <option value="hoodie">Худи/Свитшоты</option>
+                            <option value="t-shirt">Футболки/Лонгсливы</option>
+                            <option value="pants">Штаны/Джинсы</option>
+                            <option value="shoes">Обувь</option>
+                            <option value="accessories">Аксессуары</option>
+                            <option value="parfum">Парфюм</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="min-price" class="block text-sm font-medium text-gray-700 mb-1">Цена (от - до)</label>
+                        <div class="flex space-x-2">
+                            <input type="number" id="min-price" placeholder="Мин." oninput="filterAndRender()" class="w-1/2 border-gray-300 rounded-md shadow-sm text-sm p-2">
+                            <input type="number" id="max-price" placeholder="Макс." oninput="filterAndRender()" class="w-1/2 border-gray-300 rounded-md shadow-sm text-sm p-2">
+                        </div>
+                    </div>
+                    
+                    <button onclick="clearFilters()" class="w-full mt-2 py-2 text-sm font-semibold border border-gray-300 rounded-md hover:bg-gray-200 transition duration-150">
+                        Сбросить фильтры
+                    </button>
+                </div>
+
+                <div class="flex-1">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cart-view" class="hidden fade-in">
+            <h2 class="text-4xl font-bold brand-font mb-6">Корзина</h2>
+            <div id="cart-items" class="space-y-4">
+                </div>
+            <div id="cart-summary" class="mt-8 pt-4 border-t border-gray-200 flex justify-between items-center text-xl font-bold">
+                <span>Итого:</span>
+                <span id="cart-total">$0</span>
+            </div>
+            
+            <div id="payment-form-container" class="mt-8 border p-4 rounded-lg bg-gray-50 shadow-md hidden">
+                <h3 class="text-xl font-bold mb-4">Данные для оплаты</h3>
+                
+                <form id="payment-form" class="space-y-4">
+                    <div>
+                        <label for="card-number" class="block text-sm font-medium text-gray-700">Номер карты</label>
+                        <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required 
+                               class="w-full border border-gray-300 rounded-md shadow-sm text-lg p-3 mt-1 focus:ring-black focus:border-black">
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <div class="w-1/2">
+                            <label for="card-expiry" class="block text-sm font-medium text-gray-700">Срок действия (ММ/ГГ)</label>
+                            <input type="text" id="card-expiry" placeholder="ММ/ГГ" maxlength="5" required 
+                                   class="w-full border border-gray-300 rounded-md shadow-sm text-lg p-3 mt-1 focus:ring-black focus:border-black">
+                        </div>
+                        <div class="w-1/2">
+                            <label for="card-cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                            <input type="password" id="card-cvv" placeholder="XXX" maxlength="3" required 
+                                   class="w-full border border-gray-300 rounded-md shadow-sm text-lg p-3 mt-1 focus:ring-black focus:border-black">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="mt-6 w-full py-3 bg-black text-white uppercase font-semibold hover:bg-gray-800 transition duration-300 disabled:opacity-50" id="checkout-btn" disabled>
+                        Оплатить и оформить заказ
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div id="wishlist-view" class="hidden fade-in">
+            <h2 class="text-4xl font-bold brand-font mb-6">Избранное</h2>
+            <div id="wishlist-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                </div>
+        </div>
+
+        <div id="order-history-view" class="hidden fade-in">
+            <h2 class="text-4xl font-bold brand-font mb-6">История заказов</h2>
+            <div id="order-history-list" class="space-y-8">
+                </div>
+        </div>
+
+        <div id="admin-panel" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex justify-center items-start pt-10">
+            <div class="bg-white p-6 rounded-lg shadow-2xl w-full max-w-md relative fade-in">
+                <button onclick="toggleAdminPanel()" class="absolute top-3 right-3 text-gray-500 hover:text-black">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h3 class="text-2xl font-bold brand-font mb-6">Добавить товар</h3>
+                
+                <form id="add-product-form" class="space-y-4">
+                    <input type="text" id="admin-name" placeholder="Название товара" class="w-full border p-2 text-sm" required>
+                    <input type="text" id="admin-brand" placeholder="Бренд (точное совпадение)" class="w-full border p-2 text-sm" required>
+                    <select id="admin-category" class="w-full border p-2 text-sm" required>
+                        <option value="">Выберите Категорию</option>
+                        <option value="outwear">Верхняя одежда</option>
+                        <option value="hoodie">Худи/Свитшоты</option>
+                        <option value="t-shirt">Футболки/Лонгсливы</option>
+                        <option value="pants">Штаны/Джинсы</option>
+                        <option value="shoes">Обувь</option>
+                        <option value="accessories">Аксессуары</option>
+                        <option value="parfum">Парфюм</option>
+                    </select>
+                    <input type="number" id="admin-price" placeholder="Цена (USD)" class="w-full border p-2 text-sm" required>
+                    <input type="text" id="admin-img" placeholder="URL Картинки 1" class="w-full border p-2 text-sm" required>
+                    <input type="text" id="admin-img2" placeholder="URL Картинки 2 (опц.)" class="w-full border p-2 text-sm">
+                    
+                    <button type="submit" class="w-full py-2 bg-black text-white uppercase font-semibold hover:bg-gray-800 transition duration-300">
+                        Добавить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- DATA & STATE ---
+        const defaultProducts = [
+            // Balenciaga
+            { id:1, name:"Men's Combat Strike Boot in Kaki | Balenciaga", brand:"Balenciaga", category:"shoes", price:1250, img:"brands/strikeboots.jpg" }, 
+            { id:2, name:"D-RING CARGO ZIP-UP HOODIE IN FADED BLACK", brand:"Balenciaga", category:"hoodie", price:2790, img:"brands/balenciaga,hoodie.jpg" },
+            { id:3, name:"Balenciaga Back Hoodie Medium Fit in Faded", brand:"Balenciaga", category:"hoodie", price:1350, img:"brands/balenciaga.hoodie.jpg" }, 
+            { id:4, name:"Cargo Pants in Black", brand:"Balenciaga", category:"pants", price:2290, img:"brands/CargoPants.jpg" }, 
+            
+            // Adidas X TC (Thug Club)
+            { id:5, name:"ADIDAS TC TG Sweat JACKET HD", brand:"Thug Club", category:"outwear", price:150, img:"brands/ADIDAS TC JACKET.jpg", img2:"brands/ADIDAS TC TG  JACKET HD.jpg" },
+            { id:6, name:"ADIDAS & TC LS T-Shirt", brand:"Thug Club", category:"t-shirt", price:95, img:"brands/ADIDAS TC SHIRT.jpg"},
+            { id:7, name:"adidas TC TG Sweat Pant", brand:"Thug Club", category:"pants", price:140, img:"brands/adidas tc pant.jpg", img2:"brands/adidas pant.jpg"},
+            { id:8, name:"adidas Superstar Boot Luxe TC", brand:"Thug Club", category:"shoes", price:125, img:"brands/adidas Superstar Boot TC.jpg", img2:"brands/adidas Superstar TC.jpg"},
+            
+            // Rick Owens
+            { id:9, name:"Rick OWens Jacket", brand:"Rick Owens", category:"outwear", price:3870, img:"brands/rickowensjacket.jpg", img2:"brands/rickowensjacket.jpg"},
+            { id:10, name:"DRKSHDWpants", brand:"Rick Owens", category:"pants", price:630, img:"brands/drkshdwpants.jpg", img2:"brands/drkshdwpants.jpg"},
+            { id:11, name:"DRKSHDW Sneakers", brand:"Rick Owens", category:"shoes", price:685, img:"brands/drkshdwboot.jpg", img2:"brands/drkshdwboot.jpg"},
+            { id:12, name:"Rick Owens Sneakers", brand:"Rick Owens", category:"shoes", price:750, img:"brands/rickowensboot.jpg", img2:"brands/rickowensboot.jpg"},
+            { id:13, name:"Rick Owens Ring", brand:"Rick Owens", category:"accessories", price:260, img:"brands/rickrings.jpg", img2:"brands/rickrings.jpg"},
+            
+            // Maison Margiela
+            { id:14, name:"Completo in raso", brand:"Maison Margiela", category:"t-shirt", price:4700, img:"brands/completo in raso.jpg", img2:"brands/completo in raso.jpg"},
+            { id:15, name:"Sciarpa in cashmere", brand:"Maison Margiela", category:"accessories", price:890, img:"brands/Sciarpa in cashmere.jpg", img2:"brands/Sciarpa in cashmere.jpg"},
+            { id:16, name:"Giacca con cintura", brand:"Maison Margiela", category:"outwear", price:2750, img:"brands/Giacca con cintura.jpg", img2:"brands/Giacca con cintura.jpg"},
+            { id:17, name:"T-shirt con logo graffiti", brand:"Maison Margiela", category:"t-shirt", price:590, img:"brands/T-shirt con logo graffiti.jpg", img2:"brands/T-shirt con logo graffiti.jpg"},
+            { id:18, name:"Jeans a gamba dritta", brand:"Maison Margiela", category:"pants", price:1290, img:"brands/Jeans a gamba dritta.jpg", img2:"brands/Jeans a gamba dritta.jpg"},
+            { id:19, name:"Sneaker Replica", brand:"Maison Margiela", category:"shoes", price:690, img:"brands/Sneaker Replica.jpg", img2:"brands/Sneaker Replica.jpg"},
+            { id:20, name:"Sneakers Loved to Death", brand:"Maison Margiela", category:"shoes", price:820, img:"brands/Sneakers Loved to Death.jpg", img2:"brands/Sneakers Loved to Death.jpg"},
+            { id:21, name:"Portacarte Four Stitches", brand:"Maison Margiela", category:"accessories", price:335, img:"brands/Portacarte Four Stitches.jpg", img2:"brands/Portacarte Four Stitches.jpg"},
+            { id:22, name:"Eau de toilette Replica Whispers in the Library", brand:"Maison Margiela", category:"parfum", price:145, img:"brands/Eau de toilette Replica Whispers in the Library.jpg", img2:"brands/Eau de toilette Replica Whispers in the Library.jpg"},
+            { id:23, name:"Eau de toilette Replica Under the Stars", brand:"Maison Margiela", category:"parfum", price:145, img:"brands/Eau de toilette Replica Under the Stars.jpg", img2:"brands/Eau de toilette Replica Under the Stars.jpg"},
+            { id:24, name:"Eau de toilette Replica By the Fireplace", brand:"Maison Margiela", category:"parfum", price:145, img:"brands/Eau de toilette Replica By the Fireplace.jpg", img2:"brands/Eau de toilette Replica By the Fireplace.jpg"},
+            
+            // Acne Studios
+            { id:25, name:"Twill jacket", brand:"Acne Studios", category:"outwear", price:1050, img:"brands/Twill jacket.jpg", img2:"brands/Twill jacket Navy.jpg"},
+            { id:26, name:"Leather bomber jacket", brand:"Acne Studios", category:"outwear", price:3080, img:"brands/Leather bomber jacket.jpg", img2:"brands/Leather bomber.jpg"},
+            { id:27, name:"Cashmere jacket", brand:"Acne Studios", category:"outwear", price:1300, img:"brands/Cashmere jacket.jpg", img2:"brands/Cashmere jacket..jpg"},
+            { id:28, name:"Sweater printed logo", brand:"Acne Studios", category:"t-shirt", price:490, img:"brands/Sweater printed logo.jpg", img2:"brands/Sweater printed logo.jpg"}, 
+            { id:29, name:"Crew neck sweater - Relaxed unisex fit", brand:"Acne Studios", category:"t-shirt", price:380, img:"brands/Crew neck sweater - Relaxed unisex fit.jpg", img2:"brands/Crew neck sweater - Relaxed unisex fit.jpg"},
+            { id:30, name:"Printed t-shirt", brand:"Acne Studios", category:"t-shirt", price:330, img:"brands/Printed t-shirt.jpg", img2:"brands/Printed t-shirt.jpg"} 
+        ];
+
+        let products = JSON.parse(localStorage.getItem('zit_products')) || defaultProducts;
+        let cart = JSON.parse(localStorage.getItem('zit_cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('zit_wishlist')) || [];
+        let orderHistory = JSON.parse(localStorage.getItem('zit_orderHistory')) || [];
+        let currentFilter = { brand: 'All', category: 'All', minPrice: 0, maxPrice: Infinity };
+
+        // --- VIEW MANAGEMENT ---
+        function switchView(viewId) {
+            const views = ['home-view', 'shop-view', 'cart-view', 'wishlist-view', 'admin-panel', 'order-history-view'];
+            views.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        function showHome() {
+            switchView('home-view');
+        }
+
+        function showShop(brandName = 'All') {
+            currentFilter.brand = brandName;
+            document.getElementById('shop-title').innerText = brandName === 'All' ? 'Магазин' : brandName;
+            document.getElementById('category-filter').value = 'All'; 
+            document.getElementById('min-price').value = '';
+            document.getElementById('max-price').value = '';
+            currentFilter.category = 'All';
+            currentFilter.minPrice = 0;
+            currentFilter.maxPrice = Infinity;
+
+            filterAndRender();
+            switchView('shop-view');
+        }
+
+        function showCart() {
+            renderCart();
+            switchView('cart-view');
+        }
+
+        function showWishlist() {
+            renderWishlist();
+            switchView('wishlist-view');
+        }
+        
+        function showOrderHistory() {
+            renderOrderHistory();
+            switchView('order-history-view');
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        // --- SHOP LOGIC ---
+
+        function filterAndRender() {
+            currentFilter.category = document.getElementById('category-filter').value;
+            currentFilter.minPrice = Number(document.getElementById('min-price').value) || 0;
+            currentFilter.maxPrice = Number(document.getElementById('max-price').value) || Infinity;
+
+            const filteredItems = products.filter(product => {
+                const matchesBrand = currentFilter.brand === 'All' || product.brand === currentFilter.brand;
+                const matchesCategory = currentFilter.category === 'All' || product.category === currentFilter.category;
+                const matchesPrice = product.price >= currentFilter.minPrice && product.price <= currentFilter.maxPrice;
+                return matchesBrand && matchesCategory && matchesPrice;
+            });
+
+            renderProductGrid(filteredItems, 'product-grid'); // Передаем ID для магазина
+        }
+        
+        // --- RENDER PRODUCT GRID (ОБНОВЛЕНА ДЛЯ РЕЮЗАБИЛИТИ) ---
+        function renderProductGrid(items, targetContainerId) {
+            const grid = document.getElementById(targetContainerId);
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                const emptyMessage = targetContainerId === 'wishlist-items' 
+                    ? '<p class="text-gray-500 col-span-full text-center py-10">Ваш список избранного пуст.</p>'
+                    : '<p class="text-gray-500 col-span-full text-center py-10">Товары по заданным фильтрам не найдены.</p>';
+                grid.innerHTML = emptyMessage;
+                return;
+            }
+
+            items.forEach(product => {
+                const isWished = wishlist.some(id => id === product.id);
+                const secondImage = product.img2 && product.img2 !== product.img ? product.img2 : product.img;
+                
+                const card = `
+                    <div class="group relative fade-in" id="product-${product.id}">
+                        <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+                            <img 
+                                src="${product.img}" 
+                                alt="${product.name}" 
+                                class="main-image w-full h-full object-cover object-center transition-opacity duration-500 ${secondImage !== product.img ? 'group-hover:opacity-0' : 'group-hover:scale-105'}"
+                            >
+                            ${secondImage !== product.img ? `
+                                <img 
+                                    src="${secondImage}" 
+                                    alt="${product.name} (вид 2)" 
+                                    class="second-image absolute top-0 left-0 w-full h-full object-cover object-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                >
+                            ` : ''}
+                            
+                            <button onclick="toggleWishlistItem(${product.id})" class="wishlist-btn-${product.id} absolute top-2 right-2 p-2 text-lg z-10 ${isWished ? 'text-red-600 fas' : 'text-gray-400 far'} fa-heart hover:text-red-500 hover:scale-110 transition">
+                            </button>
+                        </div>
+                        <div class="mt-4 flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xs font-bold uppercase text-gray-900">${product.brand}</h3>
+                                <p class="text-sm text-gray-500 mt-1">${product.name}</p>
+                                <p class="text-sm font-medium text-gray-900 mt-2">$${product.price}</p>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="text-xs uppercase font-bold border-b border-black pb-0.5 hover:text-gray-600 self-end">
+                                В корзину
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+            updateCounters();
+        }
+
+        function clearFilters() {
+            document.getElementById('category-filter').value = 'All';
+            document.getElementById('min-price').value = '';
+            document.getElementById('max-price').value = '';
+            currentFilter.category = 'All';
+            currentFilter.minPrice = 0;
+            currentFilter.maxPrice = Infinity;
+            filterAndRender();
+        }
+
+        // --- CART LOGIC ---
+        function addToCart(productId) {
+            cart.push(productId);
+            saveData();
+            updateCounters();
+            alert('Товар добавлен в корзину!');
+        }
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+            const paymentFormContainer = document.getElementById('payment-form-container');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p class="text-gray-500">Ваша корзина пуста.</p>';
+                cartTotalElement.innerText = '$0';
+                checkoutBtn.disabled = true;
+                paymentFormContainer.classList.add('hidden'); 
+                return;
+            }
+
+            const cartDetails = cart.map(id => products.find(p => p.id === id)).filter(p => p);
+            
+            const groupedCart = cartDetails.reduce((acc, product) => {
+                const existing = acc.find(item => item.id === product.id);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    acc.push({ ...product, quantity: 1 });
+                }
+                total += product.price;
+                return acc;
+            }, []);
+
+            groupedCart.forEach(item => {
+                cartItemsContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-4 border rounded-lg bg-gray-50 fade-in">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.img}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                            <div>
+                                <p class="font-semibold">${item.name}</p>
+                                <p class="text-sm text-gray-600">${item.brand}</p>
+                                <p class="text-sm font-medium">$${item.price} x ${item.quantity}</p>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            cartTotalElement.innerText = `$${total.toFixed(2)}`;
+            checkoutBtn.disabled = false; 
+            paymentFormContainer.classList.remove('hidden'); 
+        }
+
+        function removeFromCart(productId) {
+            const index = cart.indexOf(productId);
+            if (index > -1) {
+                cart.splice(index, 1); 
+                saveData();
+                updateCounters();
+                renderCart();
+            }
+        }
+        
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (cart.length === 0) {
+                alert('Корзина пуста!');
+                return;
+            }
+            
+            const cardNumber = document.getElementById('card-number').value;
+            const cardExpiry = document.getElementById('card-expiry').value;
+            const cardCVV = document.getElementById('card-cvv').value;
+
+            if (cardNumber.length < 16 || cardExpiry.length !== 5 || cardCVV.length !== 3) {
+                 alert('Пожалуйста, введите полные и корректные данные карты.');
+                 return;
+            }
+
+            const totalAmount = document.getElementById('cart-total').innerText.substring(1);
+            const orderId = Date.now();
+            
+            const orderDetails = cart.map(id => products.find(p => p.id === id)).filter(p => p);
+            
+            const newOrder = {
+                id: orderId,
+                date: new Date().toLocaleString('ru-RU'),
+                total: parseFloat(totalAmount),
+                items: orderDetails.map(item => ({
+                    name: item.name,
+                    brand: item.brand,
+                    price: item.price,
+                    img: item.img
+                }))
+            };
+
+            orderHistory.unshift(newOrder); 
+
+            alert(`✅ Оплата на сумму $${totalAmount} прошла успешно! Заказ #${orderId} оформлен. Спасибо за покупку.`);
+            
+            cart = [];
+            saveData();
+            this.reset(); 
+            showCart(); 
+        });
+
+
+        // --- WISHLIST LOGIC (ИСПРАВЛЕНА ЛОГИКА РЕНДЕРА) ---
+        function toggleWishlistItem(productId) {
+            const productElement = document.querySelector(`.wishlist-btn-${productId}`);
+            const index = wishlist.indexOf(productId);
+            
+            if (index > -1) {
+                // Удалить
+                wishlist.splice(index, 1); 
+                alert('Товар удален из избранного.');
+                if (productElement) {
+                    productElement.classList.remove('text-red-600', 'fas');
+                    productElement.classList.add('text-gray-400', 'far');
+                }
+            } else {
+                // Добавить
+                wishlist.push(productId); 
+                alert('Товар добавлен в избранное!');
+                if (productElement) {
+                    productElement.classList.remove('text-gray-400', 'far');
+                    productElement.classList.add('text-red-600', 'fas');
+                }
+            }
+            
+            saveData();
+            updateCounters();
+            
+            // Если мы находимся в режиме избранного, обновить его, используя новый renderProductGrid
+            if(!document.getElementById('wishlist-view').classList.contains('hidden')) {
+                renderWishlist();
+            } else if (!document.getElementById('shop-view').classList.contains('hidden')) {
+                filterAndRender(); 
+            }
+        }
+
+        function renderWishlist() {
+            // Больше не нужно очищать контейнер и проверять длину, это делает renderProductGrid
+            const wishlistDetails = wishlist.map(id => products.find(p => p.id === id)).filter(p => p);
+            renderProductGrid(wishlistDetails, 'wishlist-items'); // Передаем ID для избранного
+        }
+        
+        // --- ORDER HISTORY LOGIC ---
+        function renderOrderHistory() {
+            const historyList = document.getElementById('order-history-list');
+            historyList.innerHTML = '';
+
+            if (orderHistory.length === 0) {
+                historyList.innerHTML = '<p class="text-gray-500">У вас пока нет завершенных заказов.</p>';
+                return;
+            }
+
+            orderHistory.forEach(order => {
+                // Группировка одинаковых товаров в заказе для красивого отображения
+                const groupedItems = order.items.reduce((acc, item) => {
+                    const key = item.name + item.brand;
+                    const existing = acc.find(i => i.key === key);
+                    if (existing) {
+                        existing.quantity += 1;
+                    } else {
+                        acc.push({ ...item, key, quantity: 1 });
+                    }
+                    return acc;
+                }, []);
+                
+                const itemsHtml = groupedItems.map(item => `
+                    <div class="flex items-center space-x-4 border-b border-gray-100 py-2">
+                        <img src="${item.img}" alt="${item.name}" class="w-10 h-10 object-cover rounded">
+                        <div class="text-sm">
+                            <p class="font-medium">${item.name} <span class="text-gray-500">(${item.brand})</span></p>
+                            <p class="text-xs text-gray-700">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                historyList.innerHTML += `
+                    <div class="border border-gray-200 rounded-lg shadow-sm p-5 fade-in">
+                        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
+                            <h3 class="text-lg font-bold">Заказ #${order.id}</h3>
+                            <p class="text-sm text-gray-500">${order.date}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            ${itemsHtml}
+                        </div>
+
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+                            <p class="font-bold text-lg">Итого:</p>
+                            <p class="font-bold text-lg text-black">$${order.total.toFixed(2)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+
+        // --- ADMIN LOGIC ---
+        let nextProductId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+
+        document.getElementById('add-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newProduct = {
+                id: nextProductId++,
+                brand: document.getElementById('admin-brand').value,
+                category: document.getElementById('admin-category').value,
+                name: document.getElementById('admin-name').value,
+                price: Number(document.getElementById('admin-price').value),
+                img: document.getElementById('admin-img').value,
+                img2: document.getElementById('admin-img2').value || document.getElementById('admin-img').value
+            };
+            
+            products.unshift(newProduct);
+            saveData();
+            alert('Товар добавлен!');
+            this.reset();
+            toggleAdminPanel();
+            if(!document.getElementById('shop-view').classList.contains('hidden')) {
+                filterAndRender();
+            }
+        });
+
+        // --- UTILS ---
+        function updateCounters() {
+            const wCount = document.getElementById('wishlist-count');
+            const cCount = document.getElementById('cart-count');
+            wCount.innerText = wishlist.length;
+            wCount.classList.toggle('hidden', wishlist.length === 0);
+            cCount.innerText = cart.length;
+            cCount.classList.toggle('hidden', cart.length === 0);
+        }
+
+        function saveData() {
+            localStorage.setItem('zit_products', JSON.stringify(products));
+            localStorage.setItem('zit_cart', JSON.stringify(cart));
+            localStorage.setItem('zit_wishlist', JSON.stringify(wishlist));
+            localStorage.setItem('zit_orderHistory', JSON.stringify(orderHistory)); 
+        }
+
+        // --- INIT ---
+        updateCounters();
+        if (document.getElementById('shop-view').classList.contains('hidden')) {
+            showHome();
+        } else {
+            filterAndRender();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZiT Studio - Магазин люксовых брендов</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, .brand-font, .logo { font-family: 'Playfair Display', serif; }
+        
+        /* Скрытие скроллбара */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Анимация появления */
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-white text-black antialiased flex flex-col min-h-screen">
+
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+        <div class="bg-black text-white text-xs text-center py-2 uppercase tracking-widest">
+            Бесплатная доставка при заказе от $500
+        </div>
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <nav class="hidden md:flex space-x-6 text-sm uppercase font-semibold text-gray-600">
+                <a href="#" onclick="showHome()" class="hover:text-black transition">Главная</a>
+                <a href="#" onclick="showShop('all')" class="hover:text-black transition">Каталог</a>
+                <a href="#" onclick="showHome()" class="hover:text-black transition">Бренды</a>
+            </nav>
+
+            <div class="text-3xl font-bold tracking-tighter brand-font cursor-pointer" onclick="showHome()">
+                ZiT Studio
+            </div>
+
+            <div class="flex items-center space-x-6 text-xl">
+                <button onclick="toggleAdminPanel()" title="Админ панель" class="hover:text-gray-600"><i class="fas fa-cog"></i></button>
+                <button onclick="toggleWishlist()" class="relative hover:text-gray-600">
+                    <i class="far fa-heart"></i>
+                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="toggleCart()" class="relative hover:text-gray-600">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        
+        <div id="home-view" class="fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Популярные бренды</h2>
+                <button onclick="showShop('all')" class="bg-black text-white px-8 py-3 uppercase text-sm font-bold tracking-widest hover:bg-gray-800 transition">
+                    Посмотреть коллекцию
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="flex flex-col items-center text-center group cursor-pointer" onclick="showShop('Balenciaga')">
+                    <div class="w-full aspect-video overflow-hidden mb-4 bg-gray-100">
+                        <img src="img/balenciagalogo.jpg" onerror="this.src='https://images.unsplash.com/photo-1574341907973-5da570997931?auto=format&fit=crop&w=800&q=80'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold uppercase mb-2">Balenciaga</h3>
+                    <p class="text-sm text-gray-500 max-w-xs">Explore the latest collections of sneakers, handbags, and ready to wear</p>
+                </div>
+
+                <div class="flex flex-col items-center text-center group cursor-pointer" onclick="showShop('Rick Owens')">
+                    <div class="w-full aspect-video overflow-hidden mb-4 bg-gray-100">
+                        <img src="img/rickowenslogo.jpg" onerror="this.src='https://images.unsplash.com/photo-1617141302484-934c2114d59f?auto=format&fit=crop&w=800&q=80'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold uppercase mb-2">Rick Owens</h3>
+                    <p class="text-sm text-gray-500 max-w-xs">Shop the latest Rick Owens menswear, womenswear, shoes and accessories now</p>
+                </div>
+
+                <div class="flex flex-col items-center text-center group cursor-pointer" onclick="showShop('Yohji Yamamoto')">
+                    <div class="w-full aspect-video overflow-hidden mb-4 bg-gray-100">
+                        <img src="img/YY.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold uppercase mb-2">Yohji Yamamoto</h3>
+                    <p class="text-sm text-gray-500 max-w-xs">Master tailor known for his avant-garde tailoring featuring Japanese design aesthetics.</p>
+                </div>
+
+                <div class="flex flex-col items-center text-center group cursor-pointer" onclick="showShop('Thug Club')">
+                    <div class="w-full aspect-video overflow-hidden mb-4 bg-gray-100">
+                        <img src="img/Thug Club Logo.jpg" onerror="this.src='https://images.unsplash.com/photo-1512546377823-149257e84128?auto=format&fit=crop&w=800&q=80'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold uppercase mb-2">Thug Club</h3>
+                    <p class="text-sm text-gray-500 max-w-xs">Sharp and unapologetic, fused with Seoul energy and bike-culture attitude.</p>
+                </div>
+
+                <div class="flex flex-col items-center text-center group cursor-pointer" onclick="showShop('Maison Margiela')">
+                    <div class="w-full aspect-video overflow-hidden mb-4 bg-gray-100">
+                        <img src="img/m&m,logo.jpg" onerror="this.src='https://images.unsplash.com/photo-1548622728-444772183c23?auto=format&fit=crop&w=800&q=80'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold uppercase mb-2">Maison Margiela</h3>
+                    <p class="text-sm text-gray-500 max-w-xs">Discover unique Haute Couture pieces and shop Ready-to-Wear.</p>
+                </div>
+
+                <div class="flex flex-col items-center text-center group cursor-pointer" onclick="showShop('Acne Studios')">
+                    <div class="w-full aspect-video overflow-hidden mb-4 bg-gray-100">
+                        <img src="img/acnelogo.jpg" onerror="this.src='https://images.unsplash.com/photo-1545231027-637d2f6210f8?auto=format&fit=crop&w=800&q=80'" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <h3 class="text-xl font-bold uppercase mb-2">Acne Studios</h3>
+                    <p class="text-sm text-gray-500 max-w-xs">View the latest ready-to-wear, womenswear, menswear & accessories.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="shop-view" class="hidden fade-in">
+            <h2 id="category-title" class="text-2xl font-bold mb-6 uppercase">Каталог</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8"> 
+                
+                <aside class="col-span-1 border-r border-gray-200 pr-4">
+                    <button onclick="showHome()" class="mb-6 text-sm text-gray-500 hover:text-black flex items-center gap-2">
+                        <i class="fas fa-arrow-left"></i> Назад к брендам
+                    </button>
+                    <h3 class="font-bold text-lg mb-4 uppercase">Фильтры</h3>
+                    
+                    <div class="space-y-4">
+                        <label class="block text-sm font-semibold">Бренд
+                            <select id="brandFilter" onchange="filterAndRender()" class="w-full border border-gray-300 p-2 text-sm mt-1 focus:border-black focus:ring-black">
+                                <option value="all">Все</option>
+                                <option value="Balenciaga">Balenciaga</option>
+                                <option value="Thug Club">Thug Club</option>
+                                <option value="Rick Owens">Rick Owens</option>
+                                <option value="Maison Margiela">Maison Margiela</option>
+                                <option value="Acne Studios">Acne Studios</option>
+                                <option value="Yohji Yamamoto">Yohji Yamamoto</option>
+                            </select>
+                        </label>
+
+                        <label class="block text-sm font-semibold">Категория
+                            <select id="categoryFilter" onchange="filterAndRender()" class="w-full border border-gray-300 p-2 text-sm mt-1 focus:border-black focus:ring-black">
+                                <option value="all">Все</option>
+                                <option value="pants">Pants</option>
+                                <option value="shoes">Shoes</option>
+                                <option value="hoodie">Hoodie</option>
+                                <option value="t-shirt">T-Shirts</option>
+                                <option value="outwear">Outwear</option>
+                                <option value="parfum">Parfum</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </label>
+
+                        <label class="block text-sm font-semibold">Поиск
+                            <input id="textSearch" oninput="filterAndRender()" placeholder="По названию..." class="w-full border border-gray-300 p-2 text-sm mt-1 focus:border-black focus:ring-black">
+                        </label>
+                    </div>
+                </aside>
+
+                <section class="col-span-3">
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
+                        </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 border-t border-gray-200 py-6 text-center text-sm text-gray-600">
+        © ZiT Studio — Магазин будет улучшатся и будет ещё больше 
+    </footer>
+
+    <div id="admin-panel" class="fixed inset-0 bg-black/50 z-[60] hidden flex justify-center items-center backdrop-blur-sm">
+        <div class="bg-white p-8 w-full max-w-md shadow-2xl relative rounded-sm">
+            <button onclick="toggleAdminPanel()" class="absolute top-4 right-4 text-xl"><i class="fas fa-times"></i></button>
+            <h2 class="text-2xl font-bold mb-4 brand-font">Добавить товар</h2>
+            <form id="add-product-form" class="space-y-4">
+                <select id="admin-brand" class="w-full border p-2 text-sm bg-white" required>
+                    <option value="" disabled selected>Выберите бренд</option>
+                    <option value="Balenciaga">Balenciaga</option>
+                    <option value="Rick Owens">Rick Owens</option>
+                    <option value="Yohji Yamamoto">Yohji Yamamoto</option>
+                    <option value="Thug Club">Thug Club</option>
+                    <option value="Maison Margiela">Maison Margiela</option>
+                    <option value="Acne Studios">Acne Studios</option>
+                </select>
+                <select id="admin-category" class="w-full border p-2 text-sm bg-white" required>
+                    <option value="" disabled selected>Выберите категорию</option>
+                    <option value="pants">Pants</option>
+                    <option value="shoes">Shoes</option>
+                    <option value="hoodie">Hoodie</option>
+                    <option value="t-shirt">T-Shirts</option>
+                    <option value="outwear">Outwear</option>
+                    <option value="parfum">Parfum</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+                <input type="text" id="admin-name" placeholder="Название товара" class="w-full border p-2 text-sm" required>
+                <input type="number" id="admin-price" placeholder="Цена ($)" class="w-full border p-2 text-sm" required>
+                <input type="text" id="admin-img" placeholder="URL Картинки" class="w-full border p-2 text-sm" required>
+                <button type="submit" class="w-full bg-black text-white py-3 uppercase text-sm font-bold tracking-wider hover:bg-gray-800">Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-[60] flex flex-col">
+        <div class="p-6 flex justify-between items-center border-b">
+            <h2 class="text-xl font-bold uppercase">Корзина</h2>
+            <button onclick="toggleCart()" class="text-xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-6"></div>
+        <div class="p-6 border-t bg-gray-50">
+            <div class="flex justify-between text-lg font-bold mb-4">
+                <span>Итого:</span>
+                <span id="cart-total">$0</span>
+            </div>
+            <button class="w-full bg-black text-white py-4 uppercase text-sm font-bold tracking-widest hover:bg-gray-800">Оформить заказ</button>
+        </div>
+    </div>
+
+    <div id="wishlist-sidebar" class="fixed inset-y-0 right-0 w-full md:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-[60] flex flex-col">
+        <div class="p-6 flex justify-between items-center border-b">
+            <h2 class="text-xl font-bold uppercase">Избранное</h2>
+            <button onclick="toggleWishlist()" class="text-xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="wishlist-items" class="flex-1 overflow-y-auto p-6 space-y-6"></div>
+    </div>
+
+    <script>
+        // --- DATA & STATE ---
+        const defaultProducts = [
+    { id:1, name:"Men's Combat Strike Boot in Kaki | Balenciaga", brand:"balenciaga", category:"shoes", price:1250, img:"brands/strikeboots.jpg" },
+    { id:2, name:"D-RING CARGO ZIP-UP HOODIE IN FADED BLACK", brand:"balenciaga", category:"hoodie", price:2790, img:"brands/balenciaga,hoodie.jpg" },
+    { id:3, name:"Balenciaga Back Hoodie Medium Fit in Faded", brand:"balenciaga", category:"hoodie", price:1350, img:"brands/balenciaga.hoodie.jpg" },
+    { id:4, name:"Cargo Pants in Black", brand:"balenciaga", category:"pants", price:2290, img:"brands/CargoPants.jpg" },
+    { id:5, name:"ADIDAS TC TG Sweat JACKET HD", brand:"adidasxtc", category:"outwear", price:150, img:"brands/adidas tc jacket.jpg" },
+    { id:6, name:"ADIDAS & TC LS T-Shirt", brand:"adidasxtc", category:"t-shirt", price:95, img:"brands/adidas tc t-shirt.jpg"},
+    { id:7, name:"adidas TC TG Sweat Pant", brand:"adidasxtc", category:"pants", price:140, img:"brands/adidas tc pant.jpg"},
+    { id:8, name:"adidas Superstar Boot Luxe TC", brand:"adidasxtc", category:"shoes", price:125, img:"brands/adidas superstar boot tc.jpg"},
+    { id:9, name:"Rick OWens Jacket", brand:"rickowens", category:"outwear", price:3870, img:"brands/rickowensjacket.jpg"},
+    { id:10, name:"DRKSHDWpants", brand:"rickowens", category:"pants", price:630, img:"brands/drkshdwpants.jpg"},
+    { id:11, name:"DRKSHDW Sneakers", brand:"rickowens", category:"shoes", price:685, img:"brands/drkshdwboot.jpg"},
+    { id:12, name:"Rick Owens Sneakers", brand:"rickowens", category:"shoes", price:750, img:"brands/rickowensboot.jpg"},
+    { id:13, name:"Rick Owens Ring", brand:"rickowens", category:"accessory", price:260, img:"brands/rickrings.jpg"},
+    { id:14, name:"Completo in raso", brand:"maison&margiela", category:"t-shirt", price:4700, img:"brands/completo in raso.jpg"},
+    { id:15, name:"Sciarpa in cashmere", brand:"maison&margiela", category:"accessory", price:890, img:"brands/Sciarpa in cashmere.jpg"},
+    { id:16, name:"Giacca con cintura", brand:"maison&margiela", category:"outwear", price:2750, img:"brands/Giacca con cintura.jpg"},
+    { id:17, name:"T-shirt con logo graffiti", brand:"maison&margiela", category:"t-shirt", price:590, img:"brands/T-shirt con logo graffiti.jpg"},
+    { id:18, name:"Jeans a gamba dritta", brand:"maison&margiela", category:"pants", price:1290, img:"brands/Jeans a gamba dritta.jpg"},
+    { id:19, name:"Sneaker Replica", brand:"maison&margiela", category:"shoes", price:690, img:"brands/Sneaker Replica.jpg"},
+    { id:20, name:"Sneakers Loved to Death", brand:"maison&margiela", category:"shoes", price:820, img:"brands/Sneakers Loved to Death.jpg"},
+    { id:21, name:"Portacarte Four Stitches", brand:"maison&margiela", category:"accessory", price:335, img:"brands/Portacarte Four Stitches.jpg"},
+    { id:22, name:"Eau de toilette Replica Whispers in the Library", brand:"maison&margiela", category:"parfum", price:145, img:"brands/Eau de toilette Replica Whispers in the Library.jpg"},
+    { id:23, name:"Eau de toilette Replica Under the Stars", brand:"maison&margiela", category:"parfum", price:145, img:"brands/Eau de toilette Replica Under the Stars.jpg"},
+    { id:24, name:"Eau de toilette Replica By the Fireplace", brand:"maison&margiela", category:"parfum", price:145, img:"brands/Eau de toilette Replica By the Fireplace.jpg"},
+    { id:25, name:"Twill jacket", brand:"acnestudios", category:"outwear", price:1050, img:"brands/Twill jacket.jpg"},
+    { id:26, name:"Leather bomber jacket", brand:"acnestudios", category:"outwear", price:3080, img:"brands/Leather bomber jacket.jpg"},
+    { id:27, name:"Cashmere jacket", brand:"acnestudios", category:"outwear", price:1300, img:"brands/Cashmere jacket.jpg"},
+    { id:28, name:"Sweater printed logo", brand:"acnestudios", category:"t-shirt", price:490, img:"brands/Sweater printed logo.jpg"}, 
+    { id:29, name:"Crew neck sweater - Relaxed unisex fit", brand:"acnestudios", category:"t-shirt", price:380, img:"brands/Crew neck sweater - Relaxed unisex fit.jpg"},
+    { id:30, name:"Printed t-shirt", brand:"acnestudios", category:"t-hirt", price:330, img:"brands/Printed t-shirt.jpg"}
+];
+
+        let products = JSON.parse(localStorage.getItem('zit_products')) || defaultProducts;
+        let cart = JSON.parse(localStorage.getItem('zit_cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('zit_wishlist')) || [];
+
+        // --- NAVIGATION LOGIC ---
+        function showHome() {
+            document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('shop-view').classList.add('hidden');
+            window.scrollTo(0,0);
+        }
+
+        function showShop(initialBrand = 'all') {
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('shop-view').classList.remove('hidden');
+            
+            // Устанавливаем выбранный бренд в фильтр и запускаем фильтрацию
+            const brandFilter = document.getElementById('brandFilter');
+            brandFilter.value = initialBrand === 'all' ? 'all' : initialBrand;
+            
+            // Сбрасываем остальные фильтры
+            document.getElementById('categoryFilter').value = 'all';
+            document.getElementById('textSearch').value = '';
+
+            filterAndRender();
+            window.scrollTo(0,0);
+        }
+
+        // --- FILTERING LOGIC (NEW) ---
+        function filterAndRender() {
+            const selectedBrand = document.getElementById('brandFilter').value;
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            const searchText = document.getElementById('textSearch').value.toLowerCase();
+            
+            let filteredProducts = products;
+
+            // 1. Фильтрация по бренду
+            if (selectedBrand !== 'all') {
+                filteredProducts = filteredProducts.filter(p => p.brand === selectedBrand);
+            }
+            // 2. Фильтрация по категории
+            if (selectedCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(p => p.category === selectedCategory);
+            }
+            // 3. Фильтрация по поиску (по названию)
+            if (searchText.length > 0) {
+                filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchText));
+            }
+            
+            const brandTitle = selectedBrand !== 'all' ? selectedBrand : 'Все товары';
+            const categoryTitle = selectedCategory !== 'all' ? ` (${selectedCategory})` : '';
+            const searchTitle = searchText.length > 0 ? ` (Поиск: "${searchText}")` : '';
+            
+            document.getElementById('category-title').innerText = `Каталог: ${brandTitle}${categoryTitle}${searchTitle}`;
+
+            renderProductGrid(filteredProducts);
+        }
+        
+        // --- RENDER PRODUCT GRID ---
+        function renderProductGrid(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = `<p class="text-gray-500 col-span-3 text-center py-10">Товары по заданным фильтрам не найдены.</p>`;
+                return;
+            }
+
+            items.forEach(product => {
+                const isWished = wishlist.some(id => id === product.id);
+                const card = `
+                    <div class="group relative fade-in">
+                        <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
+                            <img src="${product.img}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                            <button onclick="toggleWishlistItem(${product.id})" class="absolute top-2 right-2 p-2 text-lg z-10 ${isWished ? 'text-red-600' : 'text-gray-400 hover:text-black'}">
+                                <i class="${isWished ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="mt-4 flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xs font-bold uppercase text-gray-900">${product.brand}</h3>
+                                <p class="text-sm text-gray-500 mt-1">${product.name}</p>
+                                <p class="text-sm font-medium text-gray-900 mt-2">$${product.price}</p>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="text-xs uppercase font-bold border-b border-black pb-0.5 hover:text-gray-600 self-end">
+                                В корзину
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+            updateCounters();
+        }
+
+        // --- CART LOGIC (unchanged) ---
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('translate-x-full');
+            renderCart();
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            saveData();
+            updateCounters();
+            alert(`${product.brand} - добавлен в корзину`);
+            if(!document.getElementById('cart-sidebar').classList.contains('translate-x-full')) renderCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveData();
+            renderCart();
+            updateCounters();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center mt-10">Ваша корзина пуста</p>';
+                document.getElementById('cart-total').innerText = '$0';
+                return;
+            }
+            container.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="flex gap-4 fade-in">
+                        <div class="w-20 h-24 bg-gray-100 flex-shrink-0 overflow-hidden">
+                             <img src="${item.img}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 flex flex-col justify-between py-1">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase">${item.brand}</h4>
+                                <p class="text-xs text-gray-500 line-clamp-1">${item.name}</p>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium">$${item.price}</span>
+                                <button onclick="removeFromCart(${index})" class="text-xs text-red-500 hover:text-black">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total').innerText = '$' + total;
+        }
+
+        // --- WISHLIST LOGIC (slightly modified for filterAndRender) ---
+        function toggleWishlist() {
+            document.getElementById('wishlist-sidebar').classList.toggle('translate-x-full');
+            renderWishlist();
+        }
+
+        function toggleWishlistItem(id) {
+            const index = wishlist.indexOf(id);
+            if (index === -1) wishlist.push(id);
+            else wishlist.splice(index, 1);
+            
+            saveData();
+
+            if(!document.getElementById('shop-view').classList.contains('hidden')) {
+                filterAndRender();
+            }
+            renderWishlist();
+            updateCounters();
+        }
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlist-items');
+            if (wishlist.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center mt-10">Список пуст</p>';
+                return;
+            }
+            container.innerHTML = '';
+            wishlist.forEach(id => {
+                const item = products.find(p => p.id === id);
+                if(item) {
+                    container.innerHTML += `
+                        <div class="flex gap-4 items-center fade-in">
+                            <img src="${item.img}" class="w-16 h-16 object-cover rounded-sm">
+                            <div>
+                                <p class="text-xs font-bold uppercase">${item.brand}</p>
+                                <p class="text-xs text-gray-500">${item.name}</p>
+                                <button onclick="addToCart(${item.id})" class="text-xs mt-1 underline hover:text-gray-600">В корзину</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        // --- ADMIN PANEL (modified to include category) ---
+        function toggleAdminPanel() {
+            document.getElementById('admin-panel').classList.toggle('hidden');
+        }
+
+        document.getElementById('add-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newProduct = {
+                id: Date.now(),
+                brand: document.getElementById('admin-brand').value,
+                category: document.getElementById('admin-category').value, // NEW
+                name: document.getElementById('admin-name').value,
+                price: Number(document.getElementById('admin-price').value),
+                img: document.getElementById('admin-img').value
+            };
+            products.unshift(newProduct);
+            saveData();
+            alert('Товар добавлен!');
+            this.reset();
+            toggleAdminPanel();
+            if(!document.getElementById('shop-view').classList.contains('hidden')) {
+                filterAndRender();
+            }
+        });
+
+        // --- UTILS ---
+        function updateCounters() {
+            const wCount = document.getElementById('wishlist-count');
+            const cCount = document.getElementById('cart-count');
+            wCount.innerText = wishlist.length;
+            wCount.classList.toggle('hidden', wishlist.length === 0);
+            cCount.innerText = cart.length;
+            cCount.classList.toggle('hidden', cart.length === 0);
+        }
+
+        function saveData() {
+            localStorage.setItem('zit_products', JSON.stringify(products));
+            localStorage.setItem('zit_cart', JSON.stringify(cart));
+            localStorage.setItem('zit_wishlist', JSON.stringify(wishlist));
+        }
+
+        // --- INIT ---
+        updateCounters();
+        if (document.getElementById('shop-view').classList.contains('hidden')) {
+            showHome();
+        } else {
+            filterAndRender();
+        }
+    </script>
+</body>
+</html>

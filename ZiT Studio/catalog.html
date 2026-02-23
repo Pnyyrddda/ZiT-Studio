@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Каталог — ZiT - Studio</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="logo">ZiT - Studio</div>
+  <nav class="nav">
+    <a href="index.html">Главная</a>
+    <a href="catalog.html">Каталог</a>
+    <a href="brands.html">Бренды</a>
+    <a href="cart.html">Корзина <span id="cart-count">0</span></a>
+  </nav>
+</header>
+
+<main>
+  <div class="catalog-grid">
+    <aside class="filters">
+      <h3>Фильтры</h3>
+      <label>Бренд
+        <select id="brandFilter">
+          <option value="">Все</option>
+          <option value="balenciaga">Balenciaga</option>
+          <option value="adidasxtc">Thug Club</option>
+          <option value="rickowens">Rick Owens</option>
+          <option value="maisonmargiela">Maison Margiela</option>
+          <option value="acnestudios">Acne Studios</option>
+          <option value="yohjiyamamoto">Yohji Yamamoto</option>
+        </select>
+      </label>
+
+      <label>Категория
+        <select id="categoryFilter">
+          <option value="">Все</option>
+          <option value="pants">Pants</option>
+          <option value="shoes">Shoes</option>
+          <option value="hoodie">Hoodie</option>
+          <option value="t-shirt">T-Shirts</option>
+          <option value="outwear">outwear</option>
+          <option value="parfum">Parfum</option>
+          <option value="Accessories">Accessories</option>
+        </select>
+      </label>
+
+      <label>Поиск
+        <input id="textSearch" placeholder="По названию...">
+      </label>
+    </aside>
+
+    <section class="products">
+      <div id="productGrid" class="product-grid"></div>
+    </section>
+  </div>
+</main>
+
+<script src="js/app.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>
