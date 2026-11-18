@@ -65,8 +65,11 @@ const ZitCart = (() => {
 
     function add(productId, size = null) {
         return change(state => {
-            if (!ZitCatalog.all().some(product => product.id === productId)) throw Error('Товар недоступен.');
-            mergeLine(state.lines, { productId, size, quantity: 1 });
+            const product = ZitCatalog.all().find(item => item.id === productId);
+            if (!product) throw Error('Товар недоступен.');
+            const sizes = ZitCatalog.sizes(product);
+            if (sizes.length > 0 && !sizes.includes(size)) throw Error('Выберите доступный размер.');
+            mergeLine(state.lines, { productId, size: sizes.length ? size : null, quantity: 1 });
         });
     }
 

@@ -47,9 +47,9 @@ test('imports both cart keys once, keeping quantities, names, old orders and dis
 test('failed persistence and stale checkout leave the saved cart and history intact', async () => {
     const records = new Map();
     const { cart, storage } = openShop(records);
-    await cart.add(1);
+    await cart.add(1, '42');
     const stale = cart.details();
-    await cart.add(6);
+    await cart.add(6, 'M');
     const before = records.get(cart.key);
     await assert.rejects(cart.checkout(stale));
     storage.setItem = () => { throw Error('Storage full'); };
@@ -71,4 +71,26 @@ test('legacy product records keep custom items and use shared brand, category an
     assert.equal(tee.name, 'Custom tee');
     await catalog.add({ brand: 'Local', name: 'Another tee', price: 25, category: 't-shirt', img: 'tee.jpg' });
     assert.deepEqual(Array.from(openShop(records).catalog.all(), item => item.id), [32, 5, 31]);
+});
+
+test('new cart lines use the product sizes and keep unsized products in a single line', async () => {
+    const { cart, catalog } = openShop(new Map());
+    await assert.rejects(cart.add(6), /размер/);
+    await assert.rejects(cart.add(6, '42'), /размер/);
+    await assert.rejects(cart.add(1, 'XL'), /размер/);
+    assert.equal(cart.details().length, 0);
+
+    await cart.add(6, 'M');
+    await cart.add(6, 'L');
+    await cart.add(1, '42');
+    await cart.add(22);
+    await cart.add(22, 'M');
+    assert.deepEqual(Array.from(cart.details(), row => [row.productId, row.size, row.quantity]), [
+        [6, 'M', 1], [6, 'L', 1], [1, '42', 1], [22, null, 2]
+    ]);
+
+    await catalog.add({ category: 'shoes', name: 'Custom', price: 100, sizes: [37, 38] });
+    await assert.rejects(cart.add(31, '42'), /размер/);
+    await cart.add(31, '38');
+    assert.equal(cart.details().at(-1).size, '38');
 });

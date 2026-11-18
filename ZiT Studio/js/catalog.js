@@ -65,6 +65,13 @@ const ZitCatalog = (() => {
         return saved === null ? defaults.slice() : JSON.parse(saved).map(normalize);
     }
 
+    function sizes(product) {
+        if (Array.isArray(product.sizes)) return product.sizes.map(String);
+        if (product.category === 'shoes') return ['39', '40', '41', '42', '43', '44', '45'];
+        if (['outwear', 'hoodie', 't-shirt', 'pants'].includes(product.category)) return ['S', 'M', 'L', 'XL'];
+        return [];
+    }
+
     // Serialize read/modify/write operations from tabs on the same origin.
     function withLock(action) {
         return navigator.locks ? navigator.locks.request('zit-shop-write', action) : Promise.resolve().then(action);
@@ -80,5 +87,5 @@ const ZitCatalog = (() => {
         });
     }
 
-    return { all, add, withLock };
+    return { all, sizes, add, withLock };
 })();
