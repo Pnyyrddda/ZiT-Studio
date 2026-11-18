@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZiT Studio - Магазин люксовых брендов</title>
+    <link rel="stylesheet" href="css/admin.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -38,10 +39,10 @@
                 <button onclick="showOrderHistory()" aria-label="История заказов" class="text-gray-600 hover:text-black">
                     <i class="fas fa-history"></i>
                 </button>
-                <button onclick="toggleAdminPanel()" class="text-gray-600 hover:text-black">
+                <button id="admin-open" type="button" aria-label="Управление товарами" title="Управление товарами" class="text-gray-600 hover:text-black">
                     <i class="fas fa-user-shield"></i>
                 </button>
-                <button onclick="showWishlist()" class="text-gray-600 hover:text-black relative">
+                <button onclick="showWishlist()" aria-label="Избранное" class="text-gray-600 hover:text-black relative">
                     <i class="far fa-heart"></i>
                     <span id="wishlist-count" class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
                 </button>
@@ -181,42 +182,85 @@
                 </div>
         </div>
 
-        <div id="admin-panel" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[100] flex justify-center items-start pt-10">
-            <div class="bg-white p-6 rounded-lg shadow-2xl w-full max-w-md relative fade-in">
-                <button onclick="toggleAdminPanel()" class="absolute top-3 right-3 text-gray-500 hover:text-black">
-                    <i class="fas fa-times"></i>
-                </button>
-                <h3 class="text-2xl font-bold brand-font mb-6">Добавить товар</h3>
-                
-                <form id="add-product-form" class="space-y-4">
-                    <input type="text" id="admin-name" placeholder="Название товара" class="w-full border p-2 text-sm" required>
-                    <input type="text" id="admin-brand" placeholder="Бренд (точное совпадение)" class="w-full border p-2 text-sm" required>
-                    <select id="admin-category" class="w-full border p-2 text-sm" required>
-                        <option value="">Выберите Категорию</option>
-                        <option value="outwear">Верхняя одежда</option>
-                        <option value="hoodie">Худи/Свитшоты</option>
-                        <option value="t-shirt">Футболки/Лонгсливы</option>
-                        <option value="pants">Штаны/Джинсы</option>
-                        <option value="shoes">Обувь</option>
-                        <option value="accessories">Аксессуары</option>
-                        <option value="parfum">Парфюм</option>
-                    </select>
-                    <input type="number" id="admin-price" placeholder="Цена (USD)" class="w-full border p-2 text-sm" required>
-                    <input type="text" id="admin-img" placeholder="URL Картинки 1" class="w-full border p-2 text-sm" required>
-                    <input type="text" id="admin-img2" placeholder="URL Картинки 2 (опц.)" class="w-full border p-2 text-sm">
-                    
-                    <button type="submit" class="w-full py-2 bg-black text-white uppercase font-semibold hover:bg-gray-800 transition duration-300">
-                        Добавить
-                    </button>
-                </form>
+        <dialog id="admin-panel" class="admin-panel" aria-labelledby="admin-heading">
+            <header class="admin-header">
+                <div>
+                    <h2 id="admin-heading">Управление товарами</h2>
+                    <p>Изменения сохраняются в этом браузере.</p>
+                </div>
+                <button id="admin-close" type="button" aria-label="Закрыть панель">Закрыть</button>
+            </header>
+            <div class="admin-content">
+                <section class="admin-products" aria-labelledby="admin-products-heading">
+                    <div class="admin-heading-row">
+                        <h3 id="admin-products-heading">Товары</h3>
+                        <button id="admin-new" type="button">Новый товар</button>
+                    </div>
+                    <label>Поиск товаров
+                        <input id="admin-search" type="search" placeholder="Название или бренд">
+                    </label>
+                    <ul id="admin-products-list" class="admin-products-list"></ul>
+                </section>
+
+                <section aria-labelledby="admin-form-heading">
+                    <h3 id="admin-form-heading">Добавить товар</h3>
+                    <form id="admin-product-form" class="admin-form">
+                        <label>Название
+                            <input id="admin-name" name="name" required>
+                        </label>
+                        <label>Бренд
+                            <input id="admin-brand" name="brand" list="admin-brands" required>
+                        </label>
+                        <datalist id="admin-brands"></datalist>
+                        <div class="admin-fields-row">
+                            <label><span id="admin-category-label">Категория</span>
+                                <select id="admin-category" name="category" aria-labelledby="admin-category-label" required>
+                                    <option value="">Выберите категорию</option>
+                                    <option value="outwear">Верхняя одежда</option>
+                                    <option value="hoodie">Худи и свитшоты</option>
+                                    <option value="t-shirt">Футболки и лонгсливы</option>
+                                    <option value="pants">Брюки и джинсы</option>
+                                    <option value="shoes">Обувь</option>
+                                    <option value="accessories">Аксессуары</option>
+                                    <option value="parfum">Парфюм</option>
+                                </select>
+                            </label>
+                            <label>Цена ($)
+                                <input id="admin-price" name="price" type="number" min="0" step="0.01" required>
+                            </label>
+                        </div>
+                        <label>Основное фото
+                            <input id="admin-img" name="img" placeholder="Путь в проекте или URL" required>
+                        </label>
+                        <label>Второе фото
+                            <input id="admin-img2" name="img2" placeholder="Необязательно">
+                        </label>
+                        <label>Описание
+                            <textarea id="admin-description" name="description" rows="3"></textarea>
+                        </label>
+                        <div class="admin-actions">
+                            <button id="admin-save" class="admin-primary" type="submit">Добавить товар</button>
+                            <button id="admin-delete" class="admin-delete" type="button" hidden>Удалить товар</button>
+                        </div>
+                    </form>
+                    <div id="admin-delete-confirm" class="admin-confirm" hidden>
+                        <p id="admin-confirm-message"></p>
+                        <div class="admin-actions">
+                            <button id="admin-confirm-delete" class="admin-delete" type="button" aria-describedby="admin-confirm-message">Подтвердить удаление</button>
+                            <button id="admin-cancel-delete" type="button">Отмена</button>
+                        </div>
+                    </div>
+                    <p id="admin-status" role="status"></p>
+                </section>
             </div>
-        </div>
+        </dialog>
     </main>
 
     <script src="js/catalog.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/cart-view.js"></script>
     <script src="js/catalog-filters.js"></script>
+    <script src="js/catalog-admin.js"></script>
     <script>
         let products = ZitCatalog.all();
         let wishlist = JSON.parse(localStorage.getItem('zit_wishlist')) || [];
@@ -226,7 +270,7 @@
 
         // --- VIEW MANAGEMENT ---
         function switchView(viewId) {
-            const views = ['home-view', 'shop-view', 'cart-view', 'wishlist-view', 'admin-panel', 'order-history-view'];
+            const views = ['home-view', 'shop-view', 'cart-view', 'wishlist-view', 'order-history-view'];
             views.forEach(id => {
                 document.getElementById(id).classList.add('hidden');
             });
@@ -258,11 +302,6 @@
         function showOrderHistory() {
             renderOrderHistory();
             switchView('order-history-view');
-        }
-
-        function toggleAdminPanel() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('hidden');
         }
 
         // --- SHOP LOGIC ---
@@ -427,38 +466,12 @@
         }
 
 
-        // --- ADMIN LOGIC ---
-        document.getElementById('add-product-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const newProduct = {
-                brand: document.getElementById('admin-brand').value,
-                category: document.getElementById('admin-category').value,
-                name: document.getElementById('admin-name').value,
-                price: Number(document.getElementById('admin-price').value),
-                img: document.getElementById('admin-img').value,
-                img2: document.getElementById('admin-img2').value || document.getElementById('admin-img').value
-            };
-            
-            try {
-                await ZitCatalog.add(newProduct);
-            } catch {
-                alert('Не удалось сохранить товар.');
-                return;
-            }
-            alert('Товар добавлен!');
-            this.reset();
-            toggleAdminPanel();
-            if(!document.getElementById('shop-view').classList.contains('hidden')) {
-                filterAndRender();
-            }
-        });
-
         // --- UTILS ---
         function updateCounters() {
             const wCount = document.getElementById('wishlist-count');
-            wCount.innerText = wishlist.length;
-            wCount.classList.toggle('hidden', wishlist.length === 0);
+            const availableCount = products.filter(product => wishlist.includes(product.id)).length;
+            wCount.innerText = availableCount;
+            wCount.classList.toggle('hidden', availableCount === 0);
         }
 
         function refreshCatalog() {
@@ -466,6 +479,7 @@
             ZitFilters.syncOptions(shopFilters, products);
             if (!document.getElementById('shop-view').classList.contains('hidden')) filterAndRender();
             renderWishlist();
+            updateCounters();
         }
 
         window.addEventListener('zit-catalog-change', refreshCatalog);

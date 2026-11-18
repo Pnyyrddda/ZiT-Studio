@@ -41,9 +41,10 @@ const ZitCatalog = (() => {
         { id:30, name:"Printed t-shirt", brand:"Acne Studios", category:"t-shirt", price:330, img:"brands/Printed t-shirt.jpg", img2:"brands/Printed t-shirt.jpg"}
     ];
 
+    const key = 'zit_products';
     const oldBrands = {
         balenciaga: 'Balenciaga', adidasxtc: 'Thug Club', rickowens: 'Rick Owens',
-        'maison&margiela': 'Maison Margiela', acnestudios: 'Acne Studios'
+        'maison&margiela': 'Maison Margiela', acnestudios: 'Acne Studios', 'Adidas × TC': 'Thug Club'
     };
     const oldCategories = { accessory: 'accessories', 't-hirt': 't-shirt' };
     const oldImages = new Set([
@@ -60,9 +61,20 @@ const ZitCatalog = (() => {
         };
     }
 
+    // Upgrade the original array on the first write. Deleted product IDs stay retired.
+    function read() {
+        const saved = localStorage.getItem(key);
+        const stored = saved === null ? defaults : JSON.parse(saved);
+        if (Array.isArray(stored)) {
+            const products = stored.map(normalize);
+            const nextId = Math.max(...defaults.map(product => product.id), ...products.map(product => product.id)) + 1;
+            return { products, nextId };
+        }
+        return { products: stored.products.map(normalize), nextId: stored.nextId };
+    }
+
     function all() {
-        const saved = localStorage.getItem('zit_products');
-        return saved === null ? defaults.slice() : JSON.parse(saved).map(normalize);
+        return read().products;
     }
 
     function brandLabel(brand) {
@@ -81,15 +93,46 @@ const ZitCatalog = (() => {
         return navigator.locks ? navigator.locks.request('zit-shop-write', action) : Promise.resolve().then(action);
     }
 
-    function add(product) {
+    function change(apply) {
         return withLock(() => {
-            const products = all();
-            const id = Math.max(0, ...products.map(item => item.id)) + 1;
-            products.unshift(normalize({ ...product, id }));
-            localStorage.setItem('zit_products', JSON.stringify(products));
+            const state = read();
+            const result = apply(state);
+            localStorage.setItem(key, JSON.stringify(state));
             window.dispatchEvent(new Event('zit-catalog-change'));
+            return result;
         });
     }
 
-    return { all, brandLabel, sizes, add, withLock };
+    function add(product) {
+        return change(state => {
+            const entry = normalize({ ...product, id: state.nextId++ });
+            state.products.unshift(entry);
+            return entry;
+        });
+    }
+
+    function indexForEdit(products, original) {
+        const index = products.findIndex(product => product.id === original.id);
+        if (index === -1 || JSON.stringify(products[index]) !== JSON.stringify(original)) {
+            throw Error('Товар изменился. Выберите его заново в списке.');
+        }
+        return index;
+    }
+
+    function update(original, changes) {
+        return change(state => {
+            const index = indexForEdit(state.products, original);
+            const entry = normalize({ ...state.products[index], ...changes, id: original.id });
+            state.products[index] = entry;
+            return entry;
+        });
+    }
+
+    function remove(original) {
+        return change(state => {
+            state.products.splice(indexForEdit(state.products, original), 1);
+        });
+    }
+
+    return { key, all, brandLabel, sizes, add, update, remove, withLock };
 })();

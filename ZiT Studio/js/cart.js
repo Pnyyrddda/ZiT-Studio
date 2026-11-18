@@ -84,10 +84,12 @@ const ZitCart = (() => {
     function details(lines = read().lines) {
         const products = ZitCatalog.all();
         return lines.map(({ productId, size, quantity, snapshot }) => {
-            const product = products.find(item => item.id === productId) || snapshot;
+            const catalogItem = products.find(item => item.id === productId);
+            const product = catalogItem || snapshot;
+            const unavailableSize = catalogItem && size !== null && !ZitCatalog.sizes(catalogItem).includes(size);
             return {
                 productId, size, quantity, name: product?.name ?? ('Товар №' + productId),
-                price: product?.price ?? null, img: product?.img || '', brand: product?.brand || ''
+                price: unavailableSize ? null : product?.price ?? null, img: product?.img || '', brand: product?.brand || ''
             };
         });
     }
