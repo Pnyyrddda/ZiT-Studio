@@ -35,7 +35,7 @@
                 </nav>
             </div>
             <div class="flex items-center space-x-4">
-                <button onclick="showOrderHistory()" class="text-gray-600 hover:text-black">
+                <button onclick="showOrderHistory()" aria-label="История заказов" class="text-gray-600 hover:text-black">
                     <i class="fas fa-history"></i>
                 </button>
                 <button onclick="toggleAdminPanel()" class="text-gray-600 hover:text-black">
@@ -158,33 +158,13 @@
                 <span id="cart-total">$0</span>
             </div>
             
-            <div id="payment-form-container" class="mt-8 border p-4 rounded-lg bg-gray-50 shadow-md hidden">
-                <h3 class="text-xl font-bold mb-4">Данные для оплаты</h3>
-                
-                <form id="payment-form" class="space-y-4">
-                    <div>
-                        <label for="card-number" class="block text-sm font-medium text-gray-700">Номер карты</label>
-                        <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required 
-                               class="w-full border border-gray-300 rounded-md shadow-sm text-lg p-3 mt-1 focus:ring-black focus:border-black">
-                    </div>
-                    
-                    <div class="flex space-x-4">
-                        <div class="w-1/2">
-                            <label for="card-expiry" class="block text-sm font-medium text-gray-700">Срок действия (ММ/ГГ)</label>
-                            <input type="text" id="card-expiry" placeholder="ММ/ГГ" maxlength="5" required 
-                                   class="w-full border border-gray-300 rounded-md shadow-sm text-lg p-3 mt-1 focus:ring-black focus:border-black">
-                        </div>
-                        <div class="w-1/2">
-                            <label for="card-cvv" class="block text-sm font-medium text-gray-700">CVV</label>
-                            <input type="password" id="card-cvv" placeholder="XXX" maxlength="3" required 
-                                   class="w-full border border-gray-300 rounded-md shadow-sm text-lg p-3 mt-1 focus:ring-black focus:border-black">
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="mt-6 w-full py-3 bg-black text-white uppercase font-semibold hover:bg-gray-800 transition duration-300 disabled:opacity-50" id="checkout-btn" disabled>
-                        Оплатить и оформить заказ
-                    </button>
-                </form>
+            <p id="checkout-status" role="status" class="mt-4 text-sm font-medium"></p>
+            <div id="checkout-panel" class="mt-8 border p-4 rounded-lg bg-gray-50 shadow-md hidden">
+                <h3 class="text-xl font-bold mb-2">Демонстрационное оформление</h3>
+                <p class="text-sm text-gray-700">Демозаказ сохранится в истории в этом браузере. Оплата и доставка отключены.</p>
+                <button type="button" class="mt-4 w-full py-3 bg-black text-white uppercase font-semibold hover:bg-gray-800 transition duration-300 disabled:opacity-50" id="checkout-btn" disabled>
+                    Оформить демозаказ
+                </button>
             </div>
         </div>
 
@@ -279,7 +259,6 @@
         let products = JSON.parse(localStorage.getItem('zit_products')) || defaultProducts;
         let cart = JSON.parse(localStorage.getItem('zit_cart')) || [];
         let wishlist = JSON.parse(localStorage.getItem('zit_wishlist')) || [];
-        let orderHistory = JSON.parse(localStorage.getItem('zit_orderHistory')) || [];
         let currentFilter = { brand: 'All', category: 'All', minPrice: 0, maxPrice: Infinity };
 
         // --- VIEW MANAGEMENT ---
@@ -310,6 +289,7 @@
         }
 
         function showCart() {
+            document.getElementById('checkout-status').textContent = '';
             renderCart();
             switchView('cart-view');
         }
@@ -417,25 +397,28 @@
             alert('Товар добавлен в корзину!');
         }
 
+        function getCartDetails() {
+            return cart.map(id => products.find(product => product.id === id)).filter(Boolean);
+        }
+
         function renderCart() {
             const cartItemsContainer = document.getElementById('cart-items');
             const cartTotalElement = document.getElementById('cart-total');
-            const paymentFormContainer = document.getElementById('payment-form-container');
+            const checkoutPanel = document.getElementById('checkout-panel');
             const checkoutBtn = document.getElementById('checkout-btn');
             
             cartItemsContainer.innerHTML = '';
             let total = 0;
+            const cartDetails = getCartDetails();
 
-            if (cart.length === 0) {
+            if (cartDetails.length === 0) {
                 cartItemsContainer.innerHTML = '<p class="text-gray-500">Ваша корзина пуста.</p>';
                 cartTotalElement.innerText = '$0';
                 checkoutBtn.disabled = true;
-                paymentFormContainer.classList.add('hidden'); 
+                checkoutPanel.classList.add('hidden');
                 return;
             }
 
-            const cartDetails = cart.map(id => products.find(p => p.id === id)).filter(p => p);
-            
             const groupedCart = cartDetails.reduce((acc, product) => {
                 const existing = acc.find(item => item.id === product.id);
                 if (existing) {
@@ -467,7 +450,7 @@
 
             cartTotalElement.innerText = `$${total.toFixed(2)}`;
             checkoutBtn.disabled = false; 
-            paymentFormContainer.classList.remove('hidden'); 
+            checkoutPanel.classList.remove('hidden');
         }
 
         function removeFromCart(productId) {
@@ -480,50 +463,53 @@
             }
         }
         
-        document.getElementById('payment-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        document.getElementById('checkout-btn').addEventListener('click', function() {
+            const status = document.getElementById('checkout-status');
+            const cartDetails = getCartDetails();
+            if (cartDetails.length === 0) return;
 
-            if (cart.length === 0) {
-                alert('Корзина пуста!');
-                return;
-            }
-            
-            const cardNumber = document.getElementById('card-number').value;
-            const cardExpiry = document.getElementById('card-expiry').value;
-            const cardCVV = document.getElementById('card-cvv').value;
-
-            if (cardNumber.length < 16 || cardExpiry.length !== 5 || cardCVV.length !== 3) {
-                 alert('Пожалуйста, введите полные и корректные данные карты.');
-                 return;
-            }
-
-            const totalAmount = document.getElementById('cart-total').innerText.substring(1);
-            const orderId = Date.now();
-            
-            const orderDetails = cart.map(id => products.find(p => p.id === id)).filter(p => p);
-            
-            const newOrder = {
-                id: orderId,
+            const order = {
+                id: Date.now(),
                 date: new Date().toLocaleString('ru-RU'),
-                total: parseFloat(totalAmount),
-                items: orderDetails.map(item => ({
-                    name: item.name,
-                    brand: item.brand,
-                    price: item.price,
-                    img: item.img
-                }))
+                demo: true,
+                total: Number(cartDetails.reduce((total, item) => total + item.price, 0).toFixed(2)),
+                items: cartDetails.map(({ name, brand, price, img }) => ({ name, brand, price, img }))
             };
 
-            orderHistory.unshift(newOrder); 
+            try {
+                const savedCart = JSON.parse(localStorage.getItem('zit_cart')) || [];
+                if (JSON.stringify(savedCart) !== JSON.stringify(cart)) {
+                    cart = savedCart;
+                    updateCounters();
+                    renderCart();
+                    status.textContent = 'Корзина изменилась. Проверьте её перед оформлением.';
+                    return;
+                }
 
-            alert(`✅ Оплата на сумму $${totalAmount} прошла успешно! Заказ #${orderId} оформлен. Спасибо за покупку.`);
-            
+                const savedHistory = localStorage.getItem('zit_orderHistory');
+                const history = JSON.parse(savedHistory) || [];
+                localStorage.setItem('zit_orderHistory', JSON.stringify([order, ...history]));
+
+                try {
+                    localStorage.removeItem('zit_cart');
+                } catch (error) {
+                    if (savedHistory === null) {
+                        localStorage.removeItem('zit_orderHistory');
+                    } else {
+                        localStorage.setItem('zit_orderHistory', savedHistory);
+                    }
+                    throw error;
+                }
+            } catch {
+                status.textContent = 'Не удалось оформить демозаказ. Товары остались в корзине.';
+                return;
+            }
+
             cart = [];
-            saveData();
-            this.reset(); 
-            showCart(); 
+            updateCounters();
+            renderCart();
+            status.textContent = `Демозаказ №${order.id} на сумму $${order.total.toFixed(2)} оформлен и сохранён в истории заказов.`;
         });
-
 
         // --- WISHLIST LOGIC (ИСПРАВЛЕНА ЛОГИКА РЕНДЕРА) ---
         function toggleWishlistItem(productId) {
@@ -568,6 +554,7 @@
         // --- ORDER HISTORY LOGIC ---
         function renderOrderHistory() {
             const historyList = document.getElementById('order-history-list');
+            const orderHistory = JSON.parse(localStorage.getItem('zit_orderHistory')) || [];
             historyList.innerHTML = '';
 
             if (orderHistory.length === 0) {
@@ -601,7 +588,7 @@
                 historyList.innerHTML += `
                     <div class="border border-gray-200 rounded-lg shadow-sm p-5 fade-in">
                         <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
-                            <h3 class="text-lg font-bold">Заказ #${order.id}</h3>
+                            <h3 class="text-lg font-bold">${order.demo ? 'Демозаказ' : 'Заказ'} #${order.id}</h3>
                             <p class="text-sm text-gray-500">${order.date}</p>
                         </div>
                         
@@ -659,7 +646,6 @@
             localStorage.setItem('zit_products', JSON.stringify(products));
             localStorage.setItem('zit_cart', JSON.stringify(cart));
             localStorage.setItem('zit_wishlist', JSON.stringify(wishlist));
-            localStorage.setItem('zit_orderHistory', JSON.stringify(orderHistory)); 
         }
 
         // --- INIT ---
