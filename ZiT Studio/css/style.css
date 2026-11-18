@@ -91,3 +91,103 @@ body{font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);color:#11
     }
 
 .site-header, .filters, .product { color: var(--accent); }
+
+.catalog-page {
+    background: #fff;
+    color: var(--accent);
+}
+.catalog-page .site-header {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    padding: 16px clamp(16px, 4vw, 40px);
+    font-size: 16px;
+}
+.catalog-page .logo,
+.catalog-page .brand-filter-link {
+    color: inherit;
+}
+.catalog-page .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+}
+.catalog-page .nav a {
+    margin-left: 0;
+}
+.catalog-main {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px clamp(16px, 4vw, 40px) 32px;
+}
+.catalog-main .catalog-grid {
+    padding: 0;
+    align-items: flex-start;
+}
+.catalog-main .filters {
+    flex: 0 0 236px;
+}
+.catalog-main .filters h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+.catalog-main .filters label {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 14px;
+}
+.catalog-main .filters input,
+.catalog-main .filters select {
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font: inherit;
+}
+.price-filter {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+.catalog-main .filters button {
+    border: 0;
+    padding: 4px 0;
+    background: transparent;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.catalog-main .products {
+    width: 100%;
+    min-width: 0;
+}
+.catalog-main .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+}
+.catalog-main .product .btn {
+    text-align: center;
+}
+.catalog-brands {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 14px;
+    padding: 0;
+    list-style: none;
+}
+.catalog-brands a {
+    display: block;
+    padding: 18px;
+    border: 1px solid #ddd;
+    color: inherit;
+    text-decoration: none;
+    font-weight: 600;
+}
+.catalog-brands a:hover {
+    border-color: #111;
+    text-decoration: underline;
+}
+@media (max-width: 900px) {
+    .catalog-main .filters {
+        flex-basis: auto;
+    }
+}

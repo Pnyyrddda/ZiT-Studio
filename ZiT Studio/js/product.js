@@ -51,7 +51,7 @@ function showProduct(product) {
 
     document.title = product.name + ' — ZiT Studio';
     document.getElementById('product-name').textContent = product.name;
-    document.getElementById('product-brand').textContent = product.brand;
+    document.getElementById('product-brand').textContent = ZitCatalog.brandLabel(product.brand);
     document.getElementById('product-price').textContent = '$' + product.price.toFixed(2);
     if (product.description) {
         const description = document.getElementById('product-description');

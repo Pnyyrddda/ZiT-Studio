@@ -65,6 +65,10 @@ const ZitCatalog = (() => {
         return saved === null ? defaults.slice() : JSON.parse(saved).map(normalize);
     }
 
+    function brandLabel(brand) {
+        return brand === 'Thug Club' ? 'Adidas × TC' : brand;
+    }
+
     function sizes(product) {
         if (Array.isArray(product.sizes)) return product.sizes.map(String);
         if (product.category === 'shoes') return ['39', '40', '41', '42', '43', '44', '45'];
@@ -87,5 +91,5 @@ const ZitCatalog = (() => {
         });
     }
 
-    return { all, sizes, add, withLock };
+    return { all, brandLabel, sizes, add, withLock };
 })();
