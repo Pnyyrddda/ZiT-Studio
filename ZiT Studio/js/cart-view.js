@@ -28,13 +28,10 @@ function renderCart() {
     displayedCart = ZitCart.details();
     const count = displayedCart.reduce((sum, line) => sum + line.quantity, 0);
     const badge = document.getElementById('cart-count');
-    if (badge) {
-        badge.textContent = count;
-        if (badge.hasAttribute('data-hide-empty')) badge.classList.toggle('hidden', count === 0);
-    }
+    badge.textContent = count;
+    badge.hidden = count === 0;
 
     const list = document.getElementById('cart-items');
-    if (!list) return;
     list.replaceChildren();
     if (!count) list.textContent = 'Ваша корзина пуста.';
     for (const line of displayedCart) {
@@ -67,7 +64,7 @@ function renderCart() {
         ? '$' + ZitCart.total(displayedCart).toFixed(2) : 'Удалите недоступные товары';
     const checkout = document.getElementById('checkout-btn');
     if (checkout) checkout.disabled = checkoutPending || !count || !available;
-    document.getElementById('checkout-panel')?.classList.toggle('hidden', !count);
+    document.getElementById('checkout-panel').hidden = !count;
 }
 
 document.getElementById('checkout-btn')?.addEventListener('click', async event => {
@@ -78,6 +75,7 @@ document.getElementById('checkout-btn')?.addEventListener('click', async event =
     try {
         const order = await ZitCart.checkout(displayedCart);
         status.textContent = `Демозаказ №${order.id} на сумму $${order.total.toFixed(2)} оформлен и сохранён в истории заказов.`;
+        document.getElementById('checkout-history').hidden = false;
     } catch (error) {
         status.textContent = error.message.startsWith('Корзина изменилась') ? error.message : 'Не удалось оформить демозаказ. Проверьте корзину и попробуйте снова.';
     } finally {

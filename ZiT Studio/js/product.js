@@ -1,6 +1,5 @@
-const productIdParam = new URLSearchParams(location.search).get('id');
-const productId = /^[1-9]\d*$/.test(productIdParam ?? '') ? Number(productIdParam) : null;
 let displayedProduct = null;
+let displayedProductParam;
 
 function showProductPhotos(product) {
     const photos = [...new Set([product.img, product.img2].filter(Boolean))];
@@ -44,21 +43,20 @@ function showProductPhotos(product) {
     else unavailable.hidden = false;
 }
 
-function showProduct(product) {
+function showProduct(product, keepSelection) {
     const sizes = ZitCatalog.sizes(product);
     const form = document.getElementById('product-form');
     const options = document.getElementById('size-options');
     const status = document.getElementById('product-status');
     const submit = form.querySelector('button[type="submit"]');
 
-    document.title = product.name + ' — ZiT Studio';
     document.getElementById('product-name').textContent = product.name;
     document.getElementById('product-brand').textContent = ZitCatalog.brandLabel(product.brand);
     document.getElementById('product-price').textContent = '$' + product.price.toFixed(2);
     const description = document.getElementById('product-description');
     description.textContent = product.description || '';
     description.hidden = !product.description;
-    const previousSize = new FormData(form).get('size');
+    const previousSize = keepSelection ? new FormData(form).get('size') : null;
     options.replaceChildren();
     status.textContent = '';
     showProductPhotos(product);
@@ -97,22 +95,24 @@ function showProduct(product) {
     };
 }
 
-function refreshProduct() {
-    const product = productId === null ? undefined : ZitCatalog.all().find(item => item.id === productId);
-    if (JSON.stringify(displayedProduct) === JSON.stringify(product)) return;
+function renderProduct(products, productIdParam) {
+    const product = /^[1-9]\d*$/.test(productIdParam ?? '')
+        ? products.find(item => item.id === Number(productIdParam))
+        : undefined;
+    const title = product?.name ?? 'Товар';
+    if (displayedProductParam === productIdParam && JSON.stringify(displayedProduct) === JSON.stringify(product)) {
+        return title;
+    }
+    const keepSelection = displayedProduct?.id === product?.id;
     displayedProduct = product;
+    displayedProductParam = productIdParam;
     document.getElementById('product-details').hidden = !product;
     document.getElementById('product-missing').hidden = Boolean(product);
     if (product) {
-        showProduct(product);
+        showProduct(product, keepSelection);
     } else {
-        document.title = 'Товар — ZiT Studio';
-        document.getElementById('product-missing-title').textContent = productIdParam === null ? 'Выберите товар в каталоге' : 'Товар не найден';
+        document.getElementById('product-missing-title').textContent = productIdParam === null
+            ? 'Выберите товар в каталоге' : 'Товар не найден';
     }
+    return title;
 }
-
-window.addEventListener('storage', event => {
-    if (event.key === ZitCatalog.key || event.key === null) refreshProduct();
-});
-window.addEventListener('pageshow', refreshProduct);
-refreshProduct();

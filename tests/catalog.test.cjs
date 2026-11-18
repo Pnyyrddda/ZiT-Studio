@@ -25,7 +25,12 @@ test('combines brand, category, search and price from the current catalog', () =
     assert.deepEqual(Array.from(filters.matching(products, form), product => product.id), [21]);
     form.elements.maxPrice.valueAsNumber = 0;
     assert.equal(filters.matching(products, form).length, 0);
-    assert.deepEqual(Array.from(filters.matching(products, undefined, 'Balenciaga'), item => item.id), [1, 2, 3, 4]);
+    form.elements.brand.value = 'Balenciaga';
+    form.elements.category.value = '';
+    form.elements.query.value = '';
+    form.elements.minPrice.valueAsNumber = NaN;
+    form.elements.maxPrice.valueAsNumber = NaN;
+    assert.deepEqual(Array.from(filters.matching(products, form), item => item.id), [1, 2, 3, 4]);
     const current = [{ brand: 'New & Studio' }, { brand: 'New & Studio' }];
     assert.deepEqual(Array.from(filters.brands(current)), ['New & Studio']);
 });

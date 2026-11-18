@@ -26,13 +26,13 @@ const ZitFilters = (() => {
         setOptions(category, categories, categoryLabel, category.value);
     }
 
-    function matching(products, form, fixedBrand = '') {
-        const fields = form?.elements;
-        const brand = fixedBrand || fields?.brand.value;
-        const category = fields?.category.value;
-        const query = fields?.query.value.trim().toLowerCase();
-        const minPrice = fields?.minPrice.valueAsNumber;
-        const maxPrice = fields?.maxPrice.valueAsNumber;
+    function matching(products, form) {
+        const fields = form.elements;
+        const brand = fields.brand.value;
+        const category = fields.category.value;
+        const query = fields.query.value.trim().toLowerCase();
+        const minPrice = fields.minPrice.valueAsNumber;
+        const maxPrice = fields.maxPrice.valueAsNumber;
         return products.filter(product =>
             (!brand || product.brand === brand)
             && (!category || product.category === category)
