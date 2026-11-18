@@ -94,3 +94,48 @@ test('new cart lines use the product sizes and keep unsized products in a single
     await cart.add(31, '38');
     assert.equal(cart.details().at(-1).size, '38');
 });
+
+test('catalog edits retain product IDs and surface active changes without rewriting past orders', async () => {
+    const records = new Map();
+    const { cart, catalog } = openShop(records);
+    await cart.add(6, 'M');
+    const order = await cart.checkout(cart.details());
+    await cart.add(6, 'M');
+    const viewedCart = cart.details();
+    const original = catalog.all().find(item => item.id === 6);
+    const updated = await catalog.update(original, { name: 'Edited tee', price: 105 });
+    assert.equal(updated.id, original.id);
+    assert.equal(cart.details()[0].name, 'Edited tee');
+    assert.equal(cart.details()[0].price, 105);
+    assert.equal(cart.read().orders[0].total, order.total);
+    assert.equal(cart.read().orders[0].items[0].name, original.name);
+    await assert.rejects(cart.checkout(viewedCart), /изменилась/);
+    await assert.rejects(catalog.update(original, { price: 99 }), /изменился/);
+    await assert.rejects(catalog.remove(original), /изменился/);
+
+    const shoes = await catalog.update(updated, { category: 'shoes' });
+    assert.equal(cart.details()[0].price, null);
+    await assert.rejects(cart.checkout(cart.details()), /недоступные/);
+    await catalog.remove(shoes);
+    assert.equal(cart.details()[0].price, null);
+    await cart.remove(6, 'M');
+    assert.equal(cart.details().length, 0);
+    assert.equal(cart.read().orders[0].items[0].name, original.name);
+});
+
+test('deleted product IDs are never reused and failed catalog writes leave the record intact', async () => {
+    const records = new Map();
+    const { catalog, storage } = openShop(records);
+    const original = await catalog.add({ name: 'Local accessory', category: 'accessories', price: 40 });
+    await catalog.remove(original);
+    const continued = openShop(records).catalog;
+    const next = await continued.add({ name: 'New accessory', category: 'accessories', price: 50 });
+    assert.ok(next.id > original.id);
+    assert.ok(!continued.all().some(item => item.id === original.id));
+
+    const stored = records.get(catalog.key);
+    storage.setItem = () => { throw Error('Storage full'); };
+    await assert.rejects(catalog.remove(next), /Storage full/);
+    assert.equal(records.get(catalog.key), stored);
+    assert.equal(catalog.all().find(item => item.id === next.id).name, 'New accessory');
+});
