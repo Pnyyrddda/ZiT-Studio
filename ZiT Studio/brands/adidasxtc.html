@@ -1,37 +1,24 @@
-<h2>Adidas X TC</h2>
-<p>Совместная коллекционная одежда от Adidas & Thug Club.</p>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="ADIDAS TC JACKET.jpg">
-        <img src="ADIDAS TC TG JACKET HD.jpg">
-        <p>ADIDAS TC TG Sweat JACKET HD</p>
-        <span>150$</span>
-        <button onclick="addToCart('ADIDAS TC TG Sweat JACKET HD', 150)">В корзину</button>
-    </div>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="adidas tc t-shirt.jpg">
-        <img src="ADIDAS TC SHIRT.jpg">
-        <p>ADIDAS & TC LS T-Shirt</p>
-        <span>95$</span>
-        <button onclick="addToCart('ADIDAS & TC LS T-Shirt', 85)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="adidas tc pant.jpg">
-        <img src="adidas pant.jpg">
-        <p>adidas TC TG Sweat Pant</p>
-        <span>140$</span>
-        <button onclick="addToCart('adidas TC TG Sweat Pant', 140)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="adidas Superstar Boot TC.jpg">
-        <img src="adidas Superstar TC.jpg">
-        <p>adidas Superstar Boot Luxe TC</p>
-        <span>125$</span>
-        <button onclick="addToCart('adidas Superstar Boot Luxe TC', 125)">В корзину</button>
-    </div>
-</div>
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Adidas X TC — ZiT Studio</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="../index.html">ZiT Studio</a>
+        <nav class="nav"><a href="../catalog.html">Каталог</a><a href="../cart.html">Корзина <span id="cart-count">0</span></a></nav>
+    </header>
+    <main class="brand-section">
+        <h2>Adidas X TC</h2>
+        <p>Совместная коллекционная одежда от Adidas & Thug Club.</p>
+        <div id="productGrid" class="product-grid" data-brand="Thug Club"></div>
+    </main>
+    <script src="../js/catalog.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/cart-view.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

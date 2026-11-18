@@ -1,103 +1,24 @@
-<h2>Maison Margiela Official</h2>
-<p>Clothing, Shoes & Accessories</p>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="completo in raso.jpg">
-        <p>T-Shirt</p>
-        <h1>Completo in raso</h1>
-        <span>4700$</span>
-        <button onclick="addToCart('Completo in raso', 4700)">В корзину</button>
-    </div>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="Sciarpa in cashmere.jpg">
-        <p>Altri accessori</p>
-        <h1>Sciarpa in cashmere</h1>
-        <span>890$</span>
-        <button onclick="addToCart('Sciarpa in cashmere', 890)">В корзину</button>
-    </div>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="Giacca con cintura.jpg">
-        <p>Cappotti e giacche</p>
-        <h1>Giacca con cintura</h1>
-        <span>2750$</span>
-        <button onclick="addToCart('Giacca con cintura', 2750)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="T-shirt con logo graffiti.jpg">
-        <p>T-Shirt</p>
-        <h1>T-shirt con logo graffiti</h1>
-        <span>590$</span>
-        <button onclick="addToCart('T-shirt con logo graffiti', 590)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="Jeans a gamba dritta.jpg">
-        <p>Jeans e pantaloni</p>
-        <h1>Jeans a gamba dritta</h1>
-        <span>1290$</span>
-        <button onclick="addToCart('Jeans a gamba dritta', 1290)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Sneaker Replica.jpg">
-        <p>Sneakers</p>
-        <h1>Sneaker Replica</h1>
-        <span>690$</span>
-        <button onclick="addToCart('Sneaker Replica', 690)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Sneakers Loved to Death.jpg">
-        <p>Sneakers</p>
-        <h1>Sneakers Loved to Death</h1>
-        <span>820$</span>
-        <button onclick="addToCart('Sneakers Loved to Death', 820)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Portacarte Four Stitches.jpg">
-        <p>Portachiavi</p>
-        <h1>Portacarte Four Stitches</h1>
-        <span>335$</span>
-        <button onclick="addToCart('Portacarte Four Stitches', 335)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Eau de toilette Replica Whispers.jpg">
-        <img src="Eau de toilette Replica Whispers in the Library.jpg">
-        <p>Tutte le fragranze</p>
-        <h1>Eau de toilette Replica Whispers in the Library</h1>
-        <span>145$</span>
-        <button onclick="addToCart('Eau de toilette Replica Whispers in the Library', 145)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Replica Under the Stars.jpg">
-        <img src="Eau de toilette Replica Under the Stars.jpg">
-        <p>Tutte le fragranze</p>
-        <h1>Eau de toilette Replica Under the Stars</h1>
-        <span>145$</span>
-        <button onclick="addToCart('Eau de toilette Replica Under the Stars', 145)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Replica By the Fireplace.jpg">
-        <img src="Eau de toilette Replica By the Fireplace.jpg">
-        <p>Tutte le fragranze</p>
-        <h1>Eau de toilette Replica By the Fireplace</h1>
-        <span>145$</span>
-        <button onclick="addToCart('Eau de toilette Replica By the Fireplace', 145)">В корзину</button>
-    </div>
-</div>
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Maison Margiela Official — ZiT Studio</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="../index.html">ZiT Studio</a>
+        <nav class="nav"><a href="../catalog.html">Каталог</a><a href="../cart.html">Корзина <span id="cart-count">0</span></a></nav>
+    </header>
+    <main class="brand-section">
+        <h2>Maison Margiela Official</h2>
+        <p>Clothing, Shoes & Accessories</p>
+        <div id="productGrid" class="product-grid" data-brand="Maison Margiela"></div>
+    </main>
+    <script src="../js/catalog.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/cart-view.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
