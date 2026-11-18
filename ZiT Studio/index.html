@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiT Studio - Магазин люксовых брендов</title>
+    <title>ZiT Studio — Магазин люксовых брендов</title>
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/purchase.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap');
         
         body { font-family: 'Inter', sans-serif; }
         h1, h2, .brand-font, .logo { font-family: 'Playfair Display', serif; }
         
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        [hidden] { display: none !important; }
 
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -23,87 +22,71 @@
 <body class="bg-white text-black antialiased">
 
     <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-            <div class="flex items-center space-x-8">
-                <a href="#" class="text-2xl font-bold logo" onclick="showHome()">ZiT Studio</a>
-                <nav class="hidden md:flex space-x-6 text-sm font-semibold uppercase">
-                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop()">Shop</a>
-                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Acne Studios')">Acne Studios</a>
-                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Balenciaga')">Balenciaga</a>
-                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Maison Margiela')">Maison Margiela</a>
-                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Rick Owens')">Rick Owens</a>
-                    <a href="#" class="hover:text-gray-500 transition duration-150" onclick="showShop('Thug Club')">Adidas & TC</a>
-                </nav>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button onclick="showOrderHistory()" aria-label="История заказов" class="text-gray-600 hover:text-black">
-                    <i class="fas fa-history"></i>
-                </button>
-                <button id="admin-open" type="button" aria-label="Управление товарами" title="Управление товарами" class="text-gray-600 hover:text-black">
-                    <i class="fas fa-user-shield"></i>
-                </button>
-                <button onclick="showWishlist()" aria-label="Избранное" class="text-gray-600 hover:text-black relative">
-                    <i class="far fa-heart"></i>
-                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
-                </button>
-                <button onclick="showCart()" class="text-gray-600 hover:text-black relative">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span id="cart-count" data-hide-empty class="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-4 w-4 flex items-center justify-center hidden">0</span>
-                </button>
-            </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap gap-x-6 gap-y-3 items-center py-4">
+            <a href="#home" data-nav="home" class="text-2xl font-bold logo">ZiT Studio</a>
+            <nav class="flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold" aria-label="Магазин">
+                <a href="#catalog" data-nav="catalog" class="hover:underline">Каталог</a>
+                <a href="#brands" data-nav="brands" class="hover:underline">Бренды</a>
+                <a href="#wishlist" data-nav="wishlist" class="hover:underline">Избранное <span id="wishlist-count" hidden>0</span></a>
+                <a href="#cart" data-nav="cart" class="hover:underline">Корзина <span id="cart-count" hidden>0</span></a>
+                <a href="#orders" data-nav="orders" class="hover:underline">История заказов</a>
+            </nav>
+            <button id="admin-open" type="button" aria-label="Управление товарами" title="Управление товарами" class="ml-auto rounded border border-gray-300 px-3 py-1.5 text-sm hover:border-black">
+                Управление товарами
+            </button>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-        <div id="home-view" class="fade-in">
+        <div id="home-view" class="fade-in" data-view="home">
             <div class="relative mb-12">
                 <img src="img/logo.jpg" alt="Hero Image" class="w-full h-96 object-cover object-center">
                 <div class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white p-4">
                     <h1 class="text-6xl md:text-8xl brand-font tracking-tight mb-4">ZiT Studio</h1>
                     <p class="text-lg md:text-xl font-light uppercase tracking-widest">Культовые бренды. Ваш стиль.</p>
-                    <button onclick="showShop()" class="mt-8 px-6 py-3 border border-white text-white uppercase text-sm font-semibold hover:bg-white hover:text-black transition duration-300">
+                    <a href="#catalog" class="mt-8 px-6 py-3 border border-white text-white uppercase text-sm font-semibold hover:bg-white hover:text-black transition duration-300">
                         Начать покупки
-                    </button>
+                    </a>
                 </div>
             </div>
 
             <div class="flex items-baseline justify-between gap-4 mb-8">
                 <h2 class="text-3xl font-bold brand-font">Наши бренды</h2>
-                <a href="brands.html" class="text-sm underline">Все бренды</a>
+                <a href="#brands" class="text-sm underline">Все бренды</a>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Acne Studios')">
+                <a href="#catalog?brand=Acne+Studios" class="block group relative overflow-hidden">
                     <img src="img/acnelogo.jpg" alt="Acne Studios" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
                         <p class="text-white text-xl font-bold uppercase tracking-wider">Acne Studios</p>
                     </div>
                 </a>
-                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Balenciaga')">
+                <a href="#catalog?brand=Balenciaga" class="block group relative overflow-hidden">
                     <img src="img/balenciagalogo.jpg" alt="Balenciaga" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
                         <p class="text-white text-xl font-bold uppercase tracking-wider">Balenciaga</p>
                     </div>
                 </a>
-                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Maison Margiela')">
+                <a href="#catalog?brand=Maison+Margiela" class="block group relative overflow-hidden">
                     <img src="img/m&m,logo.jpg" alt="Maison Margiela" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
                         <p class="text-white text-xl font-bold uppercase tracking-wider">Maison Margiela</p>
                     </div>
                 </a>
-                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Rick Owens')">
+                <a href="#catalog?brand=Rick+Owens" class="block group relative overflow-hidden">
                     <img src="img/rickowenslogo.jpg" alt="Rick Owens" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
                         <p class="text-white text-xl font-bold uppercase tracking-wider">Rick Owens</p>
                     </div>
                 </a>
-                <a href="#" class="block group relative overflow-hidden" onclick="showShop('Thug Club')">
+                <a href="#catalog?brand=Thug+Club" class="block group relative overflow-hidden">
                     <img src="img/adidas&tclogo.jpg" alt="Adidas X TC" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
                         <p class="text-white text-xl font-bold uppercase tracking-wider">Adidas X TC</p>
                     </div>
                 </a>
-                <a href="#" class="block group relative overflow-hidden" onclick="showShop()">
+                <a href="#catalog" class="block group relative overflow-hidden">
                     <img src="img/logo.jpg" alt="Shop All" class="w-full h-40 object-cover object-center group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-40 flex items-center justify-center transition-opacity duration-300">
                         <p class="text-white text-xl font-bold uppercase tracking-wider">Все товары</p>
@@ -112,8 +95,8 @@
             </div>
         </div>
 
-        <div id="shop-view" class="hidden">
-            <h2 id="shop-title" class="text-4xl font-bold brand-font mb-6 fade-in">Магазин</h2>
+        <div id="shop-view" data-view="catalog" hidden>
+            <h2 id="shop-title" class="text-4xl font-bold brand-font mb-6 fade-in">Каталог</h2>
             
             <div class="flex flex-col md:flex-row gap-8">
                 <form id="shop-filters" class="w-full md:w-64 flex-shrink-0 bg-gray-50 p-4 rounded-lg shadow-sm">
@@ -139,19 +122,56 @@
                             <input name="maxPrice" id="max-price" type="number" min="0" step="0.01" class="block w-full border border-gray-300 rounded-md p-2">
                         </label>
                     </div>
-                    <button type="button" onclick="clearFilters()" class="w-full py-2 text-sm font-semibold border border-gray-300 rounded-md hover:bg-gray-200">
+                    <button type="reset" class="w-full py-2 text-sm font-semibold border border-gray-300 rounded-md hover:bg-gray-200">
                         Сбросить фильтры
                     </button>
                 </form>
 
-                <div class="flex-1">
+                <div class="flex-1 min-w-0">
                     <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                         </div>
                 </div>
             </div>
         </div>
 
-        <div id="cart-view" class="hidden fade-in">
+        <section id="brands-view" class="fade-in" data-view="brands" hidden>
+            <h2 class="text-4xl font-bold brand-font mb-6">Бренды</h2>
+            <ul id="brand-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></ul>
+        </section>
+
+        <section id="product-view" data-view="product" hidden>
+            <a class="back-link" href="#catalog">← В каталог</a>
+            <article id="product-details" hidden>
+                <div class="gallery">
+                    <div class="gallery-main">
+                        <img id="product-image" alt="" hidden>
+                        <p id="photo-unavailable" hidden>Фото недоступно</p>
+                    </div>
+                    <div id="product-photos" class="gallery-thumbnails" aria-label="Фотографии товара" hidden></div>
+                </div>
+
+                <div class="product-info">
+                    <p id="product-brand" class="product-brand"></p>
+                    <h1 id="product-name"></h1>
+                    <p id="product-price" class="product-price"></p>
+                    <p id="product-description" class="product-description" hidden></p>
+
+                    <form id="product-form">
+                        <fieldset id="product-sizes" hidden>
+                            <legend id="size-legend">Размер</legend>
+                            <div id="size-options" class="size-options"></div>
+                        </fieldset>
+                        <button class="purchase-button" type="submit">В корзину</button>
+                    </form>
+                    <p id="product-status" role="status"></p>
+                </div>
+            </article>
+            <section id="product-missing" hidden>
+                <h1 id="product-missing-title"></h1>
+            </section>
+        </section>
+
+        <div id="cart-view" class="fade-in" data-view="cart" hidden>
             <h2 class="text-4xl font-bold brand-font mb-6">Корзина</h2>
             <div id="cart-items" class="space-y-4">
                 </div>
@@ -161,7 +181,8 @@
             </div>
             
             <p id="checkout-status" role="status" class="mt-4 text-sm font-medium"></p>
-            <div id="checkout-panel" class="mt-8 border p-4 rounded-lg bg-gray-50 shadow-md hidden">
+            <a id="checkout-history" href="#orders" class="inline-block mt-2 underline" hidden>К истории заказов</a>
+            <div id="checkout-panel" class="mt-8 border p-4 rounded-lg bg-gray-50 shadow-md" hidden>
                 <h3 class="text-xl font-bold mb-2">Демонстрационное оформление</h3>
                 <p class="text-sm text-gray-700">Демозаказ сохранится в истории в этом браузере. Оплата и доставка отключены.</p>
                 <button type="button" class="mt-4 w-full py-3 bg-black text-white uppercase font-semibold hover:bg-gray-800 transition duration-300 disabled:opacity-50" id="checkout-btn" disabled>
@@ -170,13 +191,13 @@
             </div>
         </div>
 
-        <div id="wishlist-view" class="hidden fade-in">
+        <div id="wishlist-view" class="fade-in" data-view="wishlist" hidden>
             <h2 class="text-4xl font-bold brand-font mb-6">Избранное</h2>
             <div id="wishlist-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 </div>
         </div>
 
-        <div id="order-history-view" class="hidden fade-in">
+        <div id="order-history-view" class="fade-in" data-view="orders" hidden>
             <h2 class="text-4xl font-bold brand-font mb-6">История заказов</h2>
             <div id="order-history-list" class="space-y-8">
                 </div>
@@ -261,245 +282,7 @@
     <script src="js/cart-view.js"></script>
     <script src="js/catalog-filters.js"></script>
     <script src="js/catalog-admin.js"></script>
-    <script>
-        let products = ZitCatalog.all();
-        let wishlist = JSON.parse(localStorage.getItem('zit_wishlist')) || [];
-        const shopFilters = document.getElementById('shop-filters');
-        shopFilters.addEventListener('submit', event => event.preventDefault());
-        shopFilters.addEventListener('input', filterAndRender);
-
-        // --- VIEW MANAGEMENT ---
-        function switchView(viewId) {
-            const views = ['home-view', 'shop-view', 'cart-view', 'wishlist-view', 'order-history-view'];
-            views.forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(viewId).classList.remove('hidden');
-        }
-
-        function showHome() {
-            switchView('home-view');
-        }
-
-        function showShop(brandName = '') {
-            shopFilters.reset();
-            ZitFilters.syncOptions(shopFilters, products, brandName);
-            filterAndRender();
-            switchView('shop-view');
-        }
-
-        function showCart() {
-            document.getElementById('checkout-status').textContent = '';
-            renderCart();
-            switchView('cart-view');
-        }
-
-        function showWishlist() {
-            renderWishlist();
-            switchView('wishlist-view');
-        }
-        
-        function showOrderHistory() {
-            renderOrderHistory();
-            switchView('order-history-view');
-        }
-
-        // --- SHOP LOGIC ---
-
-        function filterAndRender() {
-            const brand = shopFilters.elements.brand.value;
-            document.getElementById('shop-title').textContent = brand ? ZitCatalog.brandLabel(brand) : 'Магазин';
-            renderProductGrid(ZitFilters.matching(products, shopFilters), 'product-grid');
-        }
-
-        // --- RENDER PRODUCT GRID (ОБНОВЛЕНА ДЛЯ РЕЮЗАБИЛИТИ) ---
-        function renderProductGrid(items, targetContainerId) {
-            const grid = document.getElementById(targetContainerId);
-            grid.innerHTML = '';
-
-            if (items.length === 0) {
-                const emptyMessage = targetContainerId === 'wishlist-items' 
-                    ? '<p class="text-gray-500 col-span-full text-center py-10">Ваш список избранного пуст.</p>'
-                    : '<p class="text-gray-500 col-span-full text-center py-10">Товары по заданным фильтрам не найдены.</p>';
-                grid.innerHTML = emptyMessage;
-                return;
-            }
-
-            items.forEach(product => {
-                const isWished = wishlist.some(id => id === product.id);
-                const needsSize = ZitCatalog.sizes(product).length > 0;
-                const secondImage = product.img2 && product.img2 !== product.img ? product.img2 : product.img;
-                
-                const card = `
-                    <div class="group relative fade-in" id="product-${product.id}">
-                        <div class="aspect-[3/4] overflow-hidden bg-gray-100 relative">
-                            <img 
-                                src="${shopText(product.img)}"
-                                alt="${shopText(product.name)}"
-                                class="main-image w-full h-full object-cover object-center transition-opacity duration-500 ${secondImage !== product.img ? 'group-hover:opacity-0' : 'group-hover:scale-105'}"
-                            >
-                            ${secondImage !== product.img ? `
-                                <img 
-                                    src="${shopText(secondImage)}"
-                                    alt="${shopText(product.name)} (вид 2)"
-                                    class="second-image absolute top-0 left-0 w-full h-full object-cover object-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                                >
-                            ` : ''}
-                            
-                            <button onclick="toggleWishlistItem(${product.id})" class="wishlist-btn-${product.id} absolute top-2 right-2 p-2 text-lg z-10 ${isWished ? 'text-red-600 fas' : 'text-gray-400 far'} fa-heart hover:text-red-500 hover:scale-110 transition">
-                            </button>
-                        </div>
-                        <div class="mt-4 flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xs font-bold uppercase text-gray-900">${shopText(ZitCatalog.brandLabel(product.brand))}</h3>
-                                <a class="block text-sm text-gray-600 mt-1 hover:underline" href="product.html?id=${product.id}">${shopText(product.name)}</a>
-                                <p class="text-sm font-medium text-gray-900 mt-2">$${product.price}</p>
-                            </div>
-                            ${needsSize
-                                ? `<a href="product.html?id=${product.id}" class="text-xs uppercase font-bold border-b border-black pb-0.5 self-end">Выбрать размер</a>`
-                                : `<button onclick="addToCart(${product.id})" class="text-xs uppercase font-bold border-b border-black pb-0.5 self-end">В корзину</button>`}
-                        </div>
-                    </div>
-                `;
-                grid.innerHTML += card;
-            });
-            updateCounters();
-        }
-
-        function clearFilters() {
-            shopFilters.reset();
-            filterAndRender();
-        }
-
-        // --- WISHLIST LOGIC (ИСПРАВЛЕНА ЛОГИКА РЕНДЕРА) ---
-        function toggleWishlistItem(productId) {
-            const productElement = document.querySelector(`.wishlist-btn-${productId}`);
-            const index = wishlist.indexOf(productId);
-            
-            if (index > -1) {
-                // Удалить
-                wishlist.splice(index, 1); 
-                alert('Товар удален из избранного.');
-                if (productElement) {
-                    productElement.classList.remove('text-red-600', 'fas');
-                    productElement.classList.add('text-gray-400', 'far');
-                }
-            } else {
-                // Добавить
-                wishlist.push(productId); 
-                alert('Товар добавлен в избранное!');
-                if (productElement) {
-                    productElement.classList.remove('text-gray-400', 'far');
-                    productElement.classList.add('text-red-600', 'fas');
-                }
-            }
-            
-            localStorage.setItem('zit_wishlist', JSON.stringify(wishlist));
-            updateCounters();
-            
-            // Если мы находимся в режиме избранного, обновить его, используя новый renderProductGrid
-            if(!document.getElementById('wishlist-view').classList.contains('hidden')) {
-                renderWishlist();
-            } else if (!document.getElementById('shop-view').classList.contains('hidden')) {
-                filterAndRender(); 
-            }
-        }
-
-        function renderWishlist() {
-            // Больше не нужно очищать контейнер и проверять длину, это делает renderProductGrid
-            const wishlistDetails = wishlist.map(id => products.find(p => p.id === id)).filter(p => p);
-            renderProductGrid(wishlistDetails, 'wishlist-items'); // Передаем ID для избранного
-        }
-        
-        // --- ORDER HISTORY LOGIC ---
-        function renderOrderHistory() {
-            const historyList = document.getElementById('order-history-list');
-            const orderHistory = ZitCart.read().orders;
-            historyList.innerHTML = '';
-
-            if (orderHistory.length === 0) {
-                historyList.innerHTML = '<p class="text-gray-500">У вас пока нет завершенных заказов.</p>';
-                return;
-            }
-
-            orderHistory.forEach(order => {
-                // Группировка одинаковых товаров в заказе для красивого отображения
-                const groupedItems = order.items.reduce((acc, item) => {
-                    const key = JSON.stringify([item.productId, item.name, item.brand, item.price, item.size]);
-                    const existing = acc.find(i => i.key === key);
-                    if (existing) {
-                        existing.quantity += item.quantity ?? 1;
-                    } else {
-                        acc.push({ ...item, key, quantity: item.quantity ?? 1 });
-                    }
-                    return acc;
-                }, []);
-                
-                const itemsHtml = groupedItems.map(item => `
-                    <div class="flex items-center space-x-4 border-b border-gray-100 py-2">
-                        <img src="${shopText(item.img)}" alt="${shopText(item.name)}" class="w-10 h-10 object-cover rounded">
-                        <div class="text-sm">
-                            <p class="font-medium">${shopText(item.name)} <span class="text-gray-500">(${shopText(item.brand)})</span></p>
-                            <p class="text-xs text-gray-700">$${item.price.toFixed(2)} x ${item.quantity}${item.size ? ' · ' + shopText(item.size) : ''}</p>
-                        </div>
-                    </div>
-                `).join('');
-
-                historyList.innerHTML += `
-                    <div class="border border-gray-200 rounded-lg shadow-sm p-5 fade-in">
-                        <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-200">
-                            <h3 class="text-lg font-bold">${order.demo ? 'Демозаказ' : 'Заказ'} #${shopText(order.id)}</h3>
-                            <p class="text-sm text-gray-500">${shopText(order.date)}</p>
-                        </div>
-                        
-                        <div class="mb-4">
-                            ${itemsHtml}
-                        </div>
-
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-200">
-                            <p class="font-bold text-lg">Итого:</p>
-                            <p class="font-bold text-lg text-black">$${order.total.toFixed(2)}</p>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-
-        // --- UTILS ---
-        function updateCounters() {
-            const wCount = document.getElementById('wishlist-count');
-            const availableCount = products.filter(product => wishlist.includes(product.id)).length;
-            wCount.innerText = availableCount;
-            wCount.classList.toggle('hidden', availableCount === 0);
-        }
-
-        function refreshCatalog() {
-            products = ZitCatalog.all();
-            ZitFilters.syncOptions(shopFilters, products);
-            if (!document.getElementById('shop-view').classList.contains('hidden')) filterAndRender();
-            renderWishlist();
-            updateCounters();
-        }
-
-        window.addEventListener('zit-catalog-change', refreshCatalog);
-        window.addEventListener('storage', event => {
-            if (event.key === 'zit_products' || event.key === null) refreshCatalog();
-            if ((event.key === ZitCart.key || event.key === null)
-                    && !document.getElementById('order-history-view').classList.contains('hidden')) renderOrderHistory();
-        });
-        window.addEventListener('pageshow', refreshCatalog);
-
-        // --- INIT ---
-        ZitFilters.syncOptions(shopFilters, products);
-        updateCounters();
-        if (document.getElementById('shop-view').classList.contains('hidden')) {
-            if (location.hash === '#orders') showOrderHistory();
-            else if (location.hash === '#cart') showCart();
-            else showHome();
-        } else {
-            filterAndRender();
-        }
-    </script>
+    <script src="js/product.js"></script>
+    <script src="js/storefront.js"></script>
 </body>
 </html>
