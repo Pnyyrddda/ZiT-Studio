@@ -23,17 +23,19 @@ function renderProducts() {
         const price = document.createElement('div');
         price.className = 'price';
         price.textContent = '$' + product.price;
-        const add = document.createElement('button');
-        add.className = 'btn';
-        add.textContent = 'В корзину';
-        add.addEventListener('click', () => addToCart(product.id));
-        card.append(name, price, add);
-        if (!grid.dataset.brand) {
-            const more = document.createElement('a');
-            more.className = 'btn';
-            more.href = 'product.html';
-            more.textContent = 'Подробнее';
-            card.append(more);
+        card.append(name, price);
+        const more = document.createElement('a');
+        more.className = 'btn';
+        more.href = new URL('product.html?id=' + product.id, shopRoot).href;
+        more.textContent = 'Подробнее';
+        card.append(more);
+        if (!ZitCatalog.sizes(product).length) {
+            const add = document.createElement('button');
+            add.type = 'button';
+            add.className = 'btn';
+            add.textContent = 'В корзину';
+            add.addEventListener('click', () => addToCart(product.id));
+            card.append(add);
         }
         grid.append(card);
     }

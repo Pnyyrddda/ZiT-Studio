@@ -300,6 +300,7 @@
 
             items.forEach(product => {
                 const isWished = wishlist.some(id => id === product.id);
+                const needsSize = ZitCatalog.sizes(product).length > 0;
                 const secondImage = product.img2 && product.img2 !== product.img ? product.img2 : product.img;
                 
                 const card = `
@@ -324,12 +325,12 @@
                         <div class="mt-4 flex justify-between items-start">
                             <div>
                                 <h3 class="text-xs font-bold uppercase text-gray-900">${shopText(product.brand)}</h3>
-                                <p class="text-sm text-gray-500 mt-1">${shopText(product.name)}</p>
+                                <a class="block text-sm text-gray-600 mt-1 hover:underline" href="product.html?id=${product.id}">${shopText(product.name)}</a>
                                 <p class="text-sm font-medium text-gray-900 mt-2">$${product.price}</p>
                             </div>
-                            <button onclick="addToCart(${product.id})" class="text-xs uppercase font-bold border-b border-black pb-0.5 hover:text-gray-600 self-end">
-                                В корзину
-                            </button>
+                            ${needsSize
+                                ? `<a href="product.html?id=${product.id}" class="text-xs uppercase font-bold border-b border-black pb-0.5 self-end">Выбрать размер</a>`
+                                : `<button onclick="addToCart(${product.id})" class="text-xs uppercase font-bold border-b border-black pb-0.5 self-end">В корзину</button>`}
                         </div>
                     </div>
                 `;
@@ -494,7 +495,8 @@
         // --- INIT ---
         updateCounters();
         if (document.getElementById('shop-view').classList.contains('hidden')) {
-            if (location.hash === '#cart') showCart();
+            if (location.hash === '#orders') showOrderHistory();
+            else if (location.hash === '#cart') showCart();
             else showHome();
         } else {
             filterAndRender();

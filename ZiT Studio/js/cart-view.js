@@ -1,6 +1,7 @@
 // Loaded after the page markup on every shopping page.
 const shopRoot = new URL('../', document.currentScript.src);
 let displayedCart = [];
+let checkoutPending = false;
 
 function shopText(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => (
@@ -65,18 +66,23 @@ function renderCart() {
     document.getElementById('cart-total').textContent = available
         ? '$' + ZitCart.total(displayedCart).toFixed(2) : 'Удалите недоступные товары';
     const checkout = document.getElementById('checkout-btn');
-    if (checkout) checkout.disabled = !count || !available;
+    if (checkout) checkout.disabled = checkoutPending || !count || !available;
     document.getElementById('checkout-panel')?.classList.toggle('hidden', !count);
 }
 
-document.getElementById('checkout-btn')?.addEventListener('click', async () => {
+document.getElementById('checkout-btn')?.addEventListener('click', async event => {
+    if (checkoutPending) return;
+    checkoutPending = true;
+    event.currentTarget.disabled = true;
     const status = document.getElementById('checkout-status');
     try {
         const order = await ZitCart.checkout(displayedCart);
         status.textContent = `Демозаказ №${order.id} на сумму $${order.total.toFixed(2)} оформлен и сохранён в истории заказов.`;
     } catch (error) {
-        renderCart();
         status.textContent = error.message.startsWith('Корзина изменилась') ? error.message : 'Не удалось оформить демозаказ. Проверьте корзину и попробуйте снова.';
+    } finally {
+        checkoutPending = false;
+        renderCart();
     }
 });
 

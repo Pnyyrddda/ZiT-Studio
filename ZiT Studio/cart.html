@@ -1,18 +1,36 @@
 <!doctype html>
 <html lang="ru">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Корзина</title>
-<link rel="stylesheet" href="css/style.css"></head>
-<body>
-<header class="site-header"> <a class="logo" href="index.html">ZiT Studio</a><nav class="nav"><a href="catalog.html">Каталог</a></nav></header>
-<main>
-  <h1>Корзина</h1>
-  <div id="cart-items"></div>
-  <div id="cart-total"></div>
-  <a class="btn" href="index.html#cart">Перейти к оформлению демозаказа</a>
-</main>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Корзина — ZiT Studio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/purchase.css">
+</head>
+<body class="purchase-page">
+    <header class="purchase-header">
+        <a class="logo" href="index.html">ZiT Studio</a>
+        <nav aria-label="Магазин">
+            <a href="catalog.html">Каталог</a>
+            <a href="index.html#orders">История заказов</a>
+        </nav>
+    </header>
+    <main class="purchase-main">
+        <h1>Корзина</h1>
+        <div id="cart-items"></div>
+        <div class="purchase-total">
+            <span>Итого</span>
+            <strong id="cart-total">$0.00</strong>
+        </div>
+        <div id="checkout-panel" class="hidden">
+            <p>Демозаказ сохранится в истории в этом браузере. Оплата и доставка отключены.</p>
+            <button class="btn purchase-button" id="checkout-btn" type="button" disabled>Оформить демозаказ</button>
+        </div>
+        <p id="checkout-status" role="status"></p>
+    </main>
 
-<script src="js/catalog.js"></script>
-<script src="js/cart.js"></script>
-<script src="js/cart-view.js"></script>
+    <script src="js/catalog.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/cart-view.js"></script>
 </body>
 </html>
