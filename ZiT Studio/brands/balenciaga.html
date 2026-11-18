@@ -1,54 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiT - Studio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Balenciaga — ZiT Studio</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <style>.product-image {
-    width: 150px;   /* сделает картинку меньше */
-    height: auto;   /* сохранит пропорции */
-}
-</style>
-
     <header class="site-header">
-  <div class="logo">ZiT Studio</div>
-
-    <h2>Balenciaga</h2>
-<p>Одежда, обувь и аксессуары 'Balenciaga'.</p>
-
-<div class="product-card">
-    <div class="product">
-        <img src="product.jpg" class="product-image">
-
-        <img src="balenciaga,hoodie.jpg">
-        <p>MEN'S D-RING CARGO ZIP-UP HOODIE IN FADED BLACK</p>
-        <span>2790$</span>
-        <button onclick="addToCart('MENS D-RING CARGO ZIP-UP HOODIE IN FADED BLACK', 2790)">В корзину</button>
-    </div>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="balenciaga.hoodie.jpg">
-        <p>Men's Balenciaga Back Hoodie Medium Fit in Faded Black/white</p>
-        <span>1350$</span>
-        <button onclick="addToCart('Mens Balenciaga Back Hoodie Medium Fit in Faded Black/white', 1350)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="CargoPants.jpg">
-        <p>Cargo Pants in Black | Balenciaga US</p>
-        <span>2290$</span>
-        <button onclick="addToCart('Cargo Pants in Black | Balenciaga US', 2290)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="strikeboots.jpg">
-        <p>Men's Combat Strike Boot in Kaki | Balenciaga</p>
-        <span>1250$</span>
-        <button onclick="addToCart('Mens Combat Strike Boot in Kaki | Balenciaga', 1250)">В корзину</button>
-    </div>
-</div>
+        <a class="logo" href="../index.html">ZiT Studio</a>
+        <nav class="nav"><a href="../catalog.html">Каталог</a><a href="../cart.html">Корзина <span id="cart-count">0</span></a></nav>
+    </header>
+    <main class="brand-section">
+        <h2>Balenciaga</h2>
+        <p>Одежда, обувь и аксессуары 'Balenciaga'.</p>
+        <div id="productGrid" class="product-grid" data-brand="Balenciaga"></div>
+    </main>
+    <script src="../js/catalog.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/cart-view.js"></script>
+<script src="../js/app.js"></script>
 </body>
 </html>

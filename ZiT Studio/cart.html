@@ -3,14 +3,16 @@
 <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Корзина</title>
 <link rel="stylesheet" href="css/style.css"></head>
 <body>
-<header class="site-header"> <div class="logo">Studio</div></header>
+<header class="site-header"> <a class="logo" href="index.html">ZiT Studio</a><nav class="nav"><a href="catalog.html">Каталог</a></nav></header>
 <main>
   <h1>Корзина</h1>
-  <ul id="cart-list"></ul>
+  <div id="cart-items"></div>
   <div id="cart-total"></div>
-  <button id="checkout">Оформить заказ</button>
+  <a class="btn" href="index.html#cart">Перейти к оформлению демозаказа</a>
 </main>
 
+<script src="js/catalog.js"></script>
 <script src="js/cart.js"></script>
+<script src="js/cart-view.js"></script>
 </body>
 </html>

@@ -1,50 +1,24 @@
-<h2>Acne Studios</h2>
-<p>Clothing, Accessories & Shoes.</p>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="Twill jacket.jpg">
-        <img src="Twill jacket Navy.jpg">
-        <p>Twill jacket</p>
-        <span>1050$</span>
-        <button onclick="addToCart('Twill jacket', 1050)">В корзину</button>
-    </div>
-
-<div class="product-grid">
-    <div class="product">
-        <img src="Leather bomber jacket.jpg">
-        <img src="Leather bomber.jpg">
-        <p>Leather bomber jacket</p>
-        <span>3080$</span>
-        <button onclick="addToCart('Leather bomber jacket', 3080)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="Cashmere jacket.jpg">
-        <img src="Cashmere jacket..jpg">
-        <p>Cashmere jacket</p>
-        <span>1300$</span>
-        <button onclick="addToCart('Cashmere jacket', 1300)">В корзину</button>
-    </div>
-
-<div class="product">
-        <img src="Sweater printed logo.jpg">
-        <p>Sweater printed logo</p>
-        <span>490$</span>
-        <button onclick="addToCart('Sweater printed logo', 490)">В корзину</button>
-    </div>
-</div>
-
-<div class="product">
-        <img src="Crew neck sweater - Relaxed unisex fit.jpg">
-        <p>Crew neck sweater - Relaxed unisex fit</p>
-        <span>380$</span>
-        <button onclick="addToCart('Crew neck sweater - Relaxed unisex fit', 380)">В корзину</button>
-    </div>
-
-    <div class="product">
-        <img src="Printed t-shirt.jpg">
-        <p>Printed t-shirt</p>
-        <span>330$</span>
-        <button onclick="addToCart('Printed t-shirt', 330)">В корзину</button>
-    </div>
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Acne Studios — ZiT Studio</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="../index.html">ZiT Studio</a>
+        <nav class="nav"><a href="../catalog.html">Каталог</a><a href="../cart.html">Корзина <span id="cart-count">0</span></a></nav>
+    </header>
+    <main class="brand-section">
+        <h2>Acne Studios</h2>
+        <p>Clothing, Accessories & Shoes.</p>
+        <div id="productGrid" class="product-grid" data-brand="Acne Studios"></div>
+    </main>
+    <script src="../js/catalog.js"></script>
+<script src="../js/cart.js"></script>
+<script src="../js/cart-view.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>
